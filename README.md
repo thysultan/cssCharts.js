@@ -3,7 +3,7 @@ jquery plugin to create donut and bar charts with css,
 
 [preview here](http://thysultan.com/projects/cssCharts/)
 
-inlcude:
+include:
 
 ```html
 <link rel="stylesheet" href="chart.css">
