@@ -1,2 +1,3 @@
 # cssCharts.js
-jquery plugin to create donut and bar charts with css
+jquery plugin to create donut and bar charts with css,
+[preview here](http://thysultan.com/projects/cssCharts/)
