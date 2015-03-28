@@ -13,10 +13,16 @@ include:
 run:
 
 ```javascript
-  $(function() {
-      $('.bar-chart').cssCharts({type:"bar"});
-      $('.donut-chart').cssCharts({type:"donut"});
-  });
+
+$('.bar-chart').cssCharts({type:"bar"});
+$('.donut-chart').cssCharts({type:"donut"});
+
+```
+
+optional: to trigger countUp counter for the donut chart as seen on the preview page.
+
+```javascript
+$('.donut-chart').cssCharts({type:"donut"}).trigger('show-donut-chart');
 ```
 
 that's it, style to your hearts content.
