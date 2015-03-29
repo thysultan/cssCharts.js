@@ -16,6 +16,7 @@ run:
 
 $('.bar-chart').cssCharts({type:"bar"});
 $('.donut-chart').cssCharts({type:"donut"});
+$('.line-chart').cssCharts({type:"line"}); 
 
 ```
 
