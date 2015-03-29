@@ -36,11 +36,16 @@
         <div class="donut-chart" data-percent="0.61" data-title="uptime %"></div>
       </div>
 
+      <div class="chart">
+        <ul data-cord="[12,92,40,2,40,102],[120,70,40,90,40,60]" class="line-chart"></ul>
+      </div>
+
     <script>
       // this is how you use it
       $(function() {
           $('.bar-chart').cssCharts({type:"bar"});
           $('.donut-chart').cssCharts({type:"donut"}).trigger('show-donut-chart');
+          $('.line-chart').cssCharts({type:"line"});
       });
     </script>
     </body>
