@@ -102,7 +102,7 @@
             if(!unit) unit = "%";
             if(!max) max = "100";
 
-            var data = JSON.parse("[" + data + "]");
+            var data = JSON.parse("[[" + data + "]]");
             var barsNo = data[0].length;
 
 
