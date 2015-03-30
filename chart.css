@@ -78,6 +78,14 @@
   width: 100%;
 }
 
+.bar-chart li span:before {
+  transition: all 100ms ease-in-out;
+}
+.bar-chart li:hover span:before {
+  transform: scale(1.4);
+  font-weight: bold;
+}
+
 @-webkit-keyframes drawBar {0% {height: 0;}}
 @-moz-keyframes drawBar {0% {height: 0;}}
 @keyframes drawBar {0% {height: 0;}}
@@ -177,14 +185,6 @@
 
 .pie-chart:before{
   display:none;
-}
-
-li span:before {
-  transition: all 100ms ease-in-out;
-}
-li:hover span:before {
-  transform: scale(1.4);
-  font-weight: bold;
 }
 
 /* line chart */
