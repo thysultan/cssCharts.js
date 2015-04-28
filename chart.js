@@ -81,13 +81,13 @@ sultanChart.bar = function(node){
   var height = $node.height();
   var grid = $node.attr("data-grid");
 
-  if(parseInt(grid) == 0) $node.css("background", "none");
+  if(parseInt(grid) === 0) $node.css("background", "none");
 
   if(!data) return("No data to work with");
   if(!unit) unit = "%";
   if(!max) max = "100";
 
-  var data = JSON.parse("[" + data + "]");
+  var data = JSON.parse("[[" + data + "]]");
   var barsNo = data[0].length;
 
 
@@ -119,4 +119,91 @@ sultanChart.bar = function(node){
   });
 
   $node.parent().width($node.width());
+};
+
+sultanChart.line = function(node){
+  var setAngle = function(width, height, node){
+    var hypotenuse =  Math.round( Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) );
+    var angSin = height / hypotenuse;
+    var ang = Math.round(Math.asin(angSin) * 180/Math.PI);
+        ang = -ang;
+
+    var $node = $(node).clone()
+                  .attr("style", 'transform: rotate('+ ang +'deg);'+'width:'+ hypotenuse +'px;')
+                  .attr("data-height", height)
+                  .attr("data-width", width)
+                  .attr("data-hypotenuse", hypotenuse)
+                  .attr("data-angle", ang);
+
+    return({
+      angle: ang,
+      hypo: hypotenuse,
+      width: width,
+      height: height,
+      node: $node
+    });
+  };
+
+  var setPosition = function(data){
+    var prevNode = $("ul").find(data).prev();
+    var totalWidth = parseInt($("ul").find(data).attr("data-width").replace("-", ""));
+    var totalHeight = parseInt($("ul").find(data).attr("data-height").replace("-", ""));
+
+    if(prevNode.length === 0){
+      $("ul").find(data).attr("data-total-width",totalWidth);
+      $("ul").find(data).css("left",0 + "px");
+
+      $("ul").find(data).attr("data-total-height",totalHeight);
+      $("ul").find(data).css("bottom",totalHeight*2 + "px");
+    }else{
+      var currentWidth = parseInt(prevNode.attr("data-total-width").replace("-", ""));
+      var totalWidth = parseInt(prevNode.attr("data-total-width").replace("-", "")) + parseInt(data.attr("data-width").replace("-", ""));
+
+      $("ul").find(data).attr("data-total-width",totalWidth);
+      $("ul").find(data).css("left",currentWidth + "px");
+
+      var currentHeight = parseInt(prevNode.attr("data-total-height").replace("-", ""));
+      var totalHeight = parseInt(prevNode.attr("data-total-height")) + parseInt(data.attr("data-height"));
+
+      $("ul").find(data).attr("data-total-height",totalHeight);
+      $("ul").find(data).css("bottom",currentHeight + "px");
+    }
+  };
+
+  var setContWidth = function($chart,data){
+    var width = Math.floor($chart.find("li:last-child").attr("data-total-width")) + 20;
+
+    var height = data[1];
+        height = Math.max.apply(Math, height) + 20;
+
+    $chart.css({width: width, height: height});
+    $chart.parent().addClass("line");
+  };
+
+  var $chart = $(node);
+  var cord = $chart.attr("data-cord");
+      cord = JSON.parse("[" + cord + "]");
+
+  var data = cord;
+
+  for (var i = 0; i < data[0].length; i++) {
+
+    if(i % 2 == 0){
+      var cord = {
+        x: data[0][i],
+        y: data[1][i]
+      }
+      var area = {
+        width:  data[0][i+1] - data[0][i],
+        height: data[1][i+1] - data[1][i]
+      }
+      var triangle = setAngle(area.width, area.height, $("<li></li>"));
+
+      $chart.append(triangle.node);
+      setPosition(triangle.node);
+
+    }
+  }
+
+  setContWidth($chart, data);
 };
