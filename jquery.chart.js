@@ -96,7 +96,7 @@
             var height = $node.height();
             var grid = $node.attr("data-grid");
 
-            if(parseInt(grid) == 0) $node.css("background", "none");
+            if(parseInt(grid) === 0) $node.css("background", "none");
 
             if(!data) return("No data to work with");
             if(!unit) unit = "%";
@@ -185,9 +185,11 @@
               }
             };
 
-            var setContWidth = function($chart){
-              var width = $chart.find("li:last-child").attr("data-total-width");
-              var height = $chart.find("li:last-child").attr("data-total-height");
+            var setContWidth = function($chart,data){
+              var width = Math.floor($chart.find("li:last-child").attr("data-total-width")) + 20;
+
+              var height = data[1];
+                  height = Math.max.apply(Math, height) + 20;
 
               $chart.css({width: width, height: height});
               $chart.parent().addClass("line");
@@ -200,6 +202,7 @@
             var data = cord;
 
             for (var i = 0; i < data[0].length; i++) {
+
               if(i % 2 == 0){
                 var cord = {
                   x: data[0][i],
@@ -213,9 +216,11 @@
 
                 $chart.append(triangle.node);
                 setPosition(triangle.node);
-                setContWidth($chart);
+
               }
             }
+
+            setContWidth($chart, data);
           };
 
           if(options.type == "bar"){sultanChart.bar(this);}

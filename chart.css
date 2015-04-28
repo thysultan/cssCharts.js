@@ -26,11 +26,13 @@
   width: auto;
   height: 100%;
   margin: 0 auto;
+  /* bar chart grid */
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0.06) 2%, rgba(0, 0, 0, 0) 2%);
   background-size: 100% 33px;
   background-position: left top;
   padding-top: 26px;
 }
+
 .bar-chart ul {
   margin-left: 34px;
   float: right;
@@ -74,7 +76,7 @@
   text-align: center;
   content: attr(title);
   word-wrap: break-word;
-  font-size: 11px;
+  font-size: 12px;
   width: 100%;
 }
 
@@ -82,7 +84,6 @@
   transition: all 100ms ease-in-out;
 }
 .bar-chart li:hover span:before {
-  transform: scale(1.4);
   font-weight: bold;
 }
 
@@ -160,6 +161,7 @@
   -moz-animation: rotateDonut 0.3s ease-in-out;
   animation: rotateDonut 0.3s ease-in-out;
 }
+
 @-webkit-keyframes rotateDonut {0% {transform: rotate(0deg);}}
 @-moz-keyframes rotateDonut {0% {transform: rotate(0deg);}}
 @keyframes rotateDonut {0% {transform: rotate(0deg);}}
@@ -190,20 +192,28 @@
 /* line chart */
 
 .chart.line{width:auto;height:auto;margin:0 auto;}
-.chart .line-chart{width:600px;height:600px;margin:100px auto;display:block;position:relative;}
-.line-chart:before{content:"";display:block;position:absolute;left:0px;bottom:0px;height:100%;width:1px;background:rgba(0,0,0,0.1);padding-top:10px;}
-.line-chart:after{content:"";display:block;position:absolute;left:0px;bottom:0px;width:100%;height:1px;background:rgba(0,0,0,0.1);padding-right:10px;}
+.chart .line-chart{min-width:400px;min-height:200px;margin:100px auto;display:block;position:relative;}
 
+/* line chart borders */
+.line-chart:before{content:"";display:block;position:absolute;left:0px;bottom:0px;height:100%;width:1px;background:rgba(0,0,0,0.1);padding-top:10px;}
+
+.line-chart:after{content:"";display:block;position:absolute;left:0px;bottom:0px;width:100%;height:1px;background:rgba(0,0,0,0.1);padding-right:10px;}
+/* line chart borders */
+
+/* line chart line */
 .line-chart li{display:block;height:1px;background:red;float:left;position:relative;transform-origin: bottom left;position:absolute;
-  -webkit-animation: draw 0.3s ease-in-out;
-    -moz-animation: draw 0.3s ease-in-out;
-    animation: draw 0.3s ease-in-out;
+  -webkit-animation: drawLine 0.4s ease-in-out;
+    -moz-animation: drawLine 0.4s ease-in-out;
+    animation: drawLine 0.4s ease-in-out;
 }
+
+/* line chart points */
 .line-chart li:before{content:"";position:absolute;left:-4px;bottom:-4px;width:6px;height:6px;border-radius:50%;display:block;background:#FFF;border:2px solid red;}
 
 .line-chart li:first-child{margin-left:0px;}
 .line-chart li:last-child:after{content:"";position:absolute;right:-4px;top:-4px;width:6px;height:6px;border-radius:50%;display:block;background:#FFF;border:2px solid red;}
 
+/* line chart animation */
 @-webkit-keyframes drawLine {0% {width: 0;}}
 @-moz-keyframes drawLine {0% {width: 0;}}
 @keyframes drawLine {0% {width: 0;}}
