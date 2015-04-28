@@ -210,8 +210,12 @@
 /* line chart points */
 .line-chart li:before{content:"";position:absolute;left:-4px;bottom:-4px;width:6px;height:6px;border-radius:50%;display:block;background:#FFF;border:2px solid red;}
 
-.line-chart li:first-child{margin-left:0px;}
 .line-chart li:last-child:after{content:"";position:absolute;right:-4px;top:-4px;width:6px;height:6px;border-radius:50%;display:block;background:#FFF;border:2px solid red;}
+
+/* line chart points */
+
+.line-chart li:first-child{margin-left:0px;}
+
 
 /* line chart animation */
 @-webkit-keyframes drawLine {0% {width: 0;}}
