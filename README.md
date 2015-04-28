@@ -32,8 +32,6 @@ example line chart
 
 ```html
 <ul data-cord="[x1,x2,x3,x4],[y1,y2,y3,y4]" class="line-chart"></ul>
-```
-```javascript
 $('.line-chart').cssCharts({type:"line"});
 ```
 
@@ -41,7 +39,5 @@ example bar chart
 
 ```html
 <ul class="bar-chart" data-bars="[x1,x2],[y1,y2]" data-max="10" data-unit="k" data-grid="1">
-```
-```javascript
 $('.bar-chart').cssCharts({type:"bar"});
 ```
