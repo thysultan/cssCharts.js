@@ -3,14 +3,14 @@ jquery plugin to create simple donut, bar or line charts with dom nodes. style w
 
 [preview here](http://thysultan.com/projects/cssCharts/)
 
-include:
+### Include:
 
 ```html
 <link rel="stylesheet" href="chart.css">
 <script src="jquery.chart.js"></script>
 ```
 
-run:
+### run:
 
 ```javascript
 
@@ -26,16 +26,23 @@ optional: to trigger countUp counter for the donut chart as seen on the preview 
 $('.donut-chart').cssCharts({type:"donut"}).trigger('show-donut-chart');
 ```
 
-that's it, style to your hearts content. For the rest see index.html for an example implementation.
+that's it, style to your hearts content. For the rest see index.html for an example implementation.  
 
-example line chart
+- - -
+
+### example line chart
 
 ```html
 <ul data-cord="[x1,x2,x3,x4],[y1,y2,y3,y4]" class="line-chart"></ul>
 $('.line-chart').cssCharts({type:"line"});
 ```
 
-example bar chart
+* insure sure x cordinates are 0 - ascending.  
+* insure sure y cordinates are 0 or greater.  
+
+- - -
+
+### example bar chart
 
 ```html
 <ul class="bar-chart" data-bars="[x1,x2],[y1,y2]" data-max="10" data-unit="k" data-grid="1">
