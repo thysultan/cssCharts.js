@@ -181,7 +181,7 @@
 
 .donut-chart .spinner.temp{display:none;}
 
-.donut-chart .pie {
+.donut-chart .pie{
   width: 50%;
   height: 100%;
   position: absolute;
@@ -198,7 +198,7 @@
   margin-left: -1px;
 }
 
-.pie-chart:before{
+.pie-chart:after{
   display:none;
 }
 
