@@ -19,6 +19,7 @@ $('.donut-chart').cssCharts({type:"donut"});
 $('.line-chart').cssCharts({type:"line"}); 
 
 ```
+### example donut/pie chart
 
 optional: to trigger countUp counter for the donut chart as seen on the preview page.
 
@@ -26,7 +27,11 @@ optional: to trigger countUp counter for the donut chart as seen on the preview 
 $('.donut-chart').cssCharts({type:"donut"}).trigger('show-donut-chart');
 ```
 
-that's it, style to your hearts content. For the rest see index.html for an example implementation.  
+add "pie-chart" class to .donut-chart if you want to convert it to a pie chart, i.e
+
+```html
+<div class="donut-chart pie-chart" data-percent="0.61" data-title="uptime %"></div>
+```
 
 - - -
 
@@ -48,3 +53,7 @@ $('.line-chart').cssCharts({type:"line"});
 <ul class="bar-chart" data-bars="[x1,x2],[y1,y2]" data-max="10" data-unit="k" data-grid="1">
 $('.bar-chart').cssCharts({type:"bar"});
 ```
+
+- - - 
+
+style to your hearts content, see index.html for an example implementation.  
