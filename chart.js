@@ -1,3 +1,11 @@
+/*
+ * cssCharts v0.1.0
+ * https://github.com/sultantarimo
+ *
+ * (c)2015 Sultan Tarimo - sultantarimo@me.com
+ * Released under the MIT license
+ */
+
 var thychart = {
   donut: function(node){
     var $chart   = $(node);
