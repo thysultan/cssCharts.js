@@ -137,24 +137,38 @@
           };
 
           sultanChart.line = function(node){
-            var setAngle = function(width, height, node){
-              var hypotenuse =  Math.round( Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) );
-              var angSin = height / hypotenuse;
+            var setAngle = function(cord, area, node){
+              var hypotenuse =  Math.round( Math.sqrt(Math.pow(area.width, 2) + Math.pow(area.height, 2)) );
+              var angSin = area.height / hypotenuse;
               var ang = Math.round(Math.asin(angSin) * 180/Math.PI);
                   ang = -ang;
 
               var $node = $(node).clone()
-                            .attr("style", 'transform: rotate('+ ang +'deg);'+'width:'+ hypotenuse +'px;')
-                            .attr("data-height", height)
-                            .attr("data-width", width)
+                            .attr("style", 'width:'+ hypotenuse +'px;')
+                            .attr("data-height", area.height)
+                            .attr("data-width", area.width)
                             .attr("data-hypotenuse", hypotenuse)
-                            .attr("data-angle", ang);
+                            .attr("data-angle", ang)
+                            .attr("data-x", cord.x)
+                            .attr("data-y", cord.y);
+
+                  $node.find("span")
+                    .attr("style", 'transform: rotate('+ ang +'deg);'+'width:'+ hypotenuse +'px;')
+                    .attr("data-height", area.height)
+                    .attr("data-width", area.width)
+                    .attr("data-hypotenuse", hypotenuse)
+                    .attr("data-angle", ang);
+
+                  $node.find("a")
+                    .attr("style", 'height:'+ 40 +'px;'+'width:'+ 40 +'px;')
+                    .attr("data-x", cord.x)
+                    .attr("data-y", cord.y);
 
               return({
                 angle: ang,
                 hypo: hypotenuse,
-                width: width,
-                height: height,
+                width: area.width,
+                height: area.height,
                 node: $node
               });
             };
@@ -164,12 +178,17 @@
               var totalWidth = parseInt($("ul").find(data).attr("data-width").replace("-", ""));
               var totalHeight = parseInt($("ul").find(data).attr("data-height").replace("-", ""));
 
+              var totalY = parseInt($("ul").find(data).attr("data-y").replace("-", ""));
+
               if(prevNode.length === 0){
                 $("ul").find(data).attr("data-total-width",totalWidth);
                 $("ul").find(data).css("left",0 + "px");
 
-                $("ul").find(data).attr("data-total-height",totalHeight);
-                $("ul").find(data).css("bottom",totalHeight*2 + "px");
+                $("ul").find(data).attr("data-total-height", totalY - totalHeight );
+                $("ul").find(data).css("bottom",totalY + "px");
+
+                $("ul").find(data).attr("data-y",totalY);
+                $("ul").find(data).attr("data-x",0);
               }else{
                 var currentWidth = parseInt(prevNode.attr("data-total-width").replace("-", ""));
                 var totalWidth = parseInt(prevNode.attr("data-total-width").replace("-", "")) + parseInt(data.attr("data-width").replace("-", ""));
@@ -182,11 +201,14 @@
 
                 $("ul").find(data).attr("data-total-height",totalHeight);
                 $("ul").find(data).css("bottom",currentHeight + "px");
+
+                $("ul").find(data).attr("data-y",currentHeight);
+                $("ul").find(data).attr("data-x",currentWidth);
               }
             };
 
             var setContWidth = function($chart,data){
-              var width = Math.floor($chart.find("li:last-child").attr("data-total-width")) + 20;
+              var width = Math.floor($chart.find("li:last-child").attr("data-x")) + 20;
 
               var height = data[1];
                   height = Math.max.apply(Math, height) + 20;
@@ -203,21 +225,26 @@
 
             for (var i = 0; i < data[0].length; i++) {
 
-              if(i % 2 == 0){
+              // if(i % 2 == 0){
                 var cord = {
                   x: data[0][i],
                   y: data[1][i]
                 }
+
+
+
                 var area = {
                   width:  data[0][i+1] - data[0][i],
                   height: data[1][i+1] - data[1][i]
                 }
-                var triangle = setAngle(area.width, area.height, $("<li></li>"));
+
+                console.log(cord.x,cord.y, area.width, area.height);
+
+                var triangle = setAngle(cord, area, $("<li><span></span><a></a></li>"));
 
                 $chart.append(triangle.node);
                 setPosition(triangle.node);
-
-              }
+              // }
             }
 
             setContWidth($chart, data);

@@ -225,8 +225,9 @@
 /* line chart borders */
 
 /* line chart line */
-.line-chart li{display:block;height:1px;
-  background:rgb(241,127,73);
+.line-chart li{
+  display:block;height:1px;
+  /*background:rgb(241,127,73);*/
   float:left;position:relative;
   position:absolute;
 
@@ -239,8 +240,80 @@
     animation: drawLine 0.4s ease-in-out;
 }
 
+.line-chart li a:hover:before,
+.line-chart li a:hover:after{
+  display:block;z-index:10;
+}
+.line-chart li a:before{
+  content:attr(data-y);
+  cursor:pointer;
+  display:none;
+  position:absolute;
+  font-size:14px;
+  color:#FFF;
+  bottom:100%;
+  left:50%;
+  margin-bottom:-4px;
+  text-align:center;
+  width:40px;
+  background:rgba(0,0,0,0.8);
+  padding:8px;
+  z-index:40;
+
+  transform:translateX(-50%);
+
+  -webkit-border-radius:3px;
+  -moz-border-radius:3px;
+  border-radius:3px;
+}
+
+.line-chart li a:after{
+  z-index:50;
+  content:"";
+  width: 0;
+  height: 0;
+  display:none;
+  position:absolute;
+  bottom:100%;
+  left:50%;
+  margin-bottom:-16px;
+
+  border:6px solid rgba(0,0,0,0);
+  border-top: 6px solid rgba(0,0,0,0.8);
+
+  transform:translateX(-50%);
+}
+
+.line-chart li a{
+  display:block;
+  position:absolute;
+  cursor:pointer;
+
+  left:0px;
+  top:0px;
+  z-index:30;
+
+  transform:translateX(-50%) translateY(-50%);
+}
+
+/* line chart line */
+.line-chart li span{
+  display:block;height:1px;
+  background:rgb(241,127,73);
+  float:left;
+  position:absolute;
+
+  -webkit-transform-origin: bottom left;
+    -moz-transform-origin: bottom left;
+    transform-origin: bottom left;
+
+  -webkit-animation: drawLine 0.4s ease-in-out;
+    -moz-animation: drawLine 0.4s ease-in-out;
+    animation: drawLine 0.4s ease-in-out;
+}
+
 /* line chart points */
-.line-chart li:before{content:"";
+.line-chart li span:before{content:"";
   position:absolute;
   left:-4px;bottom:-4px;
   width:6px;height:6px;
@@ -251,24 +324,11 @@
   border-radius:50%;
 }
 
-.line-chart li:before,
-.line-chart li:after{
+.line-chart li span:before,
+.line-chart li span:after{
   background:rgb(241,127,73);
   border:2px solid #bd380f;
 }
-
-.line-chart li:last-child:after{
-  content:"";
-  position:absolute;
-  right:-4px;top:-4px;
-  width:6px;height:6px;
-  display:block;
-
-  -webkt-border-radius:50%;
-  -moz-border-radius:50%;
-  border-radius:50%;
-}
-
 /* line chart points */
 
 .line-chart li:first-child{margin-left:0px;}
