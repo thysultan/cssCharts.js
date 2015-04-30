@@ -55,12 +55,30 @@
 
               var chart = {
                 nodes: {
-                  spinner: function(){ return $temp.clone().attr("style", 'transform: rotate('+ chart.values.spinner +'deg);'); },
-                  mask: function(){ return $temp.clone().addClass(chart.values.selector).attr("style", 'transform: rotate('+ chart.values.mask +'deg);'); }
+                  spinner: function(){
+                    return $temp.clone().attr(
+                      "style",
+
+                      '-webkit-transform: rotate('+ chart.values.spinner +'deg);' +
+                      '-moz-transform: rotate('+ chart.values.spinner +'deg);' +
+                      'transform: rotate('+ chart.values.spinner +'deg);'
+                      );
+                  },
+                  mask: function(){
+                    return $temp.clone().addClass(chart.values.selector).attr(
+                      "style",
+
+                      '-webkit-transform: rotate('+ chart.values.mask + 'deg);' +
+                      '-moz-transform: rotate('+ chart.values.mask + 'deg);' +
+                      'transform: rotate('+ chart.values.mask + 'deg);'
+                      );
+                }
                 },
                 values: {spinner: val, mask: c, selector: "" }
               };
-              var prependNodes = function(data){ $.each(data, function(i, _node) {$chart.prepend(_node());}); };
+              var prependNodes = function(data){
+                $.each(data, function(i, _node) {$chart.prepend(_node());});
+              };
 
               // IF LESS THAN 50%
               if(val < r){
@@ -93,20 +111,27 @@
 
               var data = $node.attr("data-bars");
               var unit = $node.attr("data-unit");
-              var max = $node.attr("data-max");
               var height = $node.height();
               var grid = $node.attr("data-grid");
               var barWidth = $node.attr("data-width");
+              var max = $node.attr("data-max");
 
               if(parseInt(grid) === 0) $node.css("background", "none");
 
               if(!data) return("No data to work with");
               if(!unit) unit = "%";
-              if(!max) max = "100";
+
+              // get max data point
+              var maxData = function(){
+                var arr = JSON.parse("[" + data + "]");
+                return Math.max.apply(Math, arr.map(function(i) { return i[0]; }));
+              };
+
+              // If "data-max" is not specified or if the heighest data-point is greater than data-max
+              if(maxData() > max || !max){ max = maxData(); }
 
               data = JSON.parse("[[" + data + "]]");
               var barsNo = data[0].length;
-
 
               $.each(data, function(i, v) {
                 // first dimension
@@ -126,18 +151,36 @@
 
                     li.find("span").attr("title", title);
                     if(!barWidth){
-                      li.find("span").attr("style", "height:" + percent + "%");
+                      li.find("span").attr(
+                        "style",
+                        "height:" + percent + "%"
+                        );
                     }else{
-                      li.find("span").attr("style", "height:" + percent + "%; width:" + barWidth + "px");
+                      li.find("span").attr(
+                        "style",
+                        "height:" + percent + "%;" +
+                        "width:" + barWidth + "px"
+                        );
                     }
-
-
                     ul.append(li);
                   });
-
                   $node.append(ul);
                 }
               });
+
+              var grid = $("<div class='grid'></div>");
+                  $node.parent().append(grid);
+
+              for(var i = 0; i <= 10; i++) {
+                var toPerc = (i*10).toFixed(0);
+                var converter = max/100;
+                var toUnit = (toPerc * converter).toFixed(0);
+
+                if(i % 2 == 0){
+                  var line = $("<hr/>").css({bottom: toPerc+"%"}).attr("data-y", toUnit + unit);
+                  $node.parent().find(".grid").append(line);
+                }
+              }
 
               $node.parent().width($node.width());
             },
@@ -150,7 +193,9 @@
                     ang = -ang;
 
                 var $node = $(node).clone()
-                              .attr("style", 'width:'+ hypotenuse +'px;')
+                              .attr("style",
+                                'width:'+ hypotenuse +'px;'
+                                )
                               .attr("data-height", area.height)
                               .attr("data-width", area.width)
                               .attr("data-hypotenuse", hypotenuse)
@@ -159,14 +204,24 @@
                               .attr("data-y", cord.y);
 
                     $node.find("span")
-                      .attr("style", 'transform: rotate('+ ang +'deg);'+'width:'+ hypotenuse +'px;')
+                      .attr(
+                        "style",
+                        'width:'+ hypotenuse +'px;' +
+                        '-webkit-transform: rotate('+ ang +'deg);' +
+                        '-moz-transform: rotate('+ ang +'deg);' +
+                        'transform: rotate('+ ang +'deg);'
+                      )
                       .attr("data-height", area.height)
                       .attr("data-width", area.width)
                       .attr("data-hypotenuse", hypotenuse)
                       .attr("data-angle", ang);
 
                     $node.find("a")
-                      .attr("style", 'height:'+ 40 +'px;'+'width:'+ 40 +'px;')
+                      .attr(
+                        "style",
+                        'height:'+ 40 +'px;'+
+                        'width:'+ 40 +'px;'
+                        )
                       .attr("data-x", cord.x)
                       .attr("data-y", cord.y);
 
@@ -253,8 +308,6 @@
                     var gridSpace = $chart.height() / 10;
                     var line = $("<hr/>").css({bottom: i*gridSpace}).attr("data-y", i*gridSpace);
                     $chart.parent().find(".grid").append(line);
-
-                    console.log(gridSpace, $chart.parent().height());
                   }
               }
             }
