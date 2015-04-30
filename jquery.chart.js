@@ -229,6 +229,9 @@
 
               var data = cord;
 
+              var grid = $("<div class='grid'></div>");
+                  $chart.parent().append(grid);
+
               for (var i = 0; i < data[0].length; i++) {
                   cord = {
                     x: data[0][i],
@@ -246,10 +249,10 @@
                   setPosition(triangle.node);
                   setContWidth($chart, data);
 
-                  if(i % 2 == 0){
+                  if(i % 2 === 0){
                     var gridSpace = $chart.height() / 10;
-                    var gridNode = $("<hr/>").css({bottom: i*gridSpace});
-                    $chart.parent().append(gridNode);
+                    var line = $("<hr/>").css({bottom: i*gridSpace}).attr("data-y", i*gridSpace);
+                    $chart.parent().find(".grid").append(line);
 
                     console.log(gridSpace, $chart.parent().height());
                   }

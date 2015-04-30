@@ -241,8 +241,9 @@
   content:"";
   display:block;
   position:absolute;
-  left:0px;bottom:0px;
-  height:100%;width:1px;
+  left:0px;bottom:-10px;
+  height: calc(100% + 10px);
+  width:1px;
   background:rgb(238,238,238);
   padding-top:10px;
 }*/
@@ -252,7 +253,7 @@
   display:block;
   position:absolute;
   left:0px;bottom:0px;
-  width:100%;height:1px;
+  height:1px;width:100%;
   background:rgb(238,238,238);
   padding-right:10px;
 }
@@ -266,6 +267,21 @@
   outline:none;
   border:none;
   background:rgb(238,238,238);
+}
+
+.chart.line hr:before{
+  position:absolute;
+  right:100%;
+  top:0px;
+  margin-right:10px;
+  color:rgba(0,0,0,0.4);
+  font-size:12px;
+  content:attr(data-y);
+  text-align:right;
+
+  -webkit-transform:translateX(-50%) translateY(-50%);
+  -moz-transform:translateX(-50%) translateY(-50%);
+  transform:translateX(-50%) translateY(-50%);
 }
 
 /* line chart borders */
@@ -306,6 +322,8 @@
   padding:8px;
   z-index:40;
 
+  -webkit-transform:translateX(-50%);
+  -moz-transform:translateX(-50%);
   transform:translateX(-50%);
 
   -webkit-border-radius:3px;
@@ -327,6 +345,8 @@
   border:6px solid rgba(0,0,0,0);
   border-top: 6px solid rgba(0,0,0,0.8);
 
+  -webkit-transform:translateX(-50%);
+  -moz-transform:translateX(-50%);
   transform:translateX(-50%);
 }
 
@@ -339,6 +359,8 @@
   top:0px;
   z-index:30;
 
+  -webkit-transform:translateX(-50%) translateY(-50%);
+  -moz-transform:translateX(-50%) translateY(-50%);
   transform:translateX(-50%) translateY(-50%);
 }
 
@@ -360,7 +382,8 @@
 }
 
 /* line chart points */
-.line-chart li span:before{content:"";
+.line-chart li span:before{
+  content:"";
   position:absolute;
   left:-4px;bottom:-4px;
   width:6px;height:6px;
@@ -369,6 +392,16 @@
   -webkt-border-radius:50%;
   -moz-border-radius:50%;
   border-radius:50%;
+}
+
+.line-chart li:hover span:before{
+  -webkit-transform:scale(1.3);
+  -moz-transform:scale(1.3);
+  transform:scale(1.3);
+
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
 }
 
 .line-chart li span:before,
