@@ -13,48 +13,64 @@
         <!-- You need only this -->
 
         <style>
-          .chart{margin:80px auto;}
-          .desc h1{text-align:center;font-family:sans-serif;font-size:22px;color:#333;padding:40px 0 0 0;}
+          .chart{margin:40px auto;}
+          h1{text-align:center;font-family:sans-serif;font-size:28px;color:#333;padding:40px 0 0 0;}
+          h2{text-align:center;font-family:sans-serif;font-size:18px;color:#333;padding:40px 0 0 0;}
           .desc p{text-align:center;font-size:16px;color:rgba(0,0,0,0.6);padding:20px 0 0 0;font-family:sans-serif;}
           .desc a{color:blue;}
+          hr{width:60%;height:1px;background:none;border:none;border-bottom:1px dashed rgba(0,0,0,0.1);outline:none;margin:40px auto 0px auto;}
+          .wrap{margin:0 auto;width:640px;}
+          /* page specific styles*/
         </style>
     </head>
     <body>
+      <div class="wrap">
 
-      <div class="desc">
-        <h1>cssCharts.js plugin</h1><p>by
-        <a href="http://twitter.com/thysultan">@thysultan</a> on
-        <a href="https://github.com/sultantarimo/cssCharts.js">github</a>
-      </p>
+        <div class="desc">
+          <h1>cssCharts.js plugin</h1><p>by
+          <a href="http://twitter.com/thysultan">@thysultan</a> on
+          <a href="https://github.com/sultantarimo/cssCharts.js">github</a>
+        </p>
+        </div>
+
+        <h2>bar chart</h2>
+        <hr>
+
+        <div class="chart">
+            <ul class="bar-chart" data-bars="[4,2],[4,5],[10,3],[4,2],[4,2]" data-max="10" data-unit="k" data-width="24"></ul>
+            <!-- <ul class="bar-chart" data-bars="[4,2],[4,5],[10,3],[4,2],[4,2]" data-max="10" data-unit="k" data-grid="0"></ul> -->
+            <!-- data max is the 100% point of the graph -->
+            <!-- set data-grid to 0 for no grid -->
+            <!-- data-width is the individual bars width -->
+        </div>
+
+        <h2>line chart</h2>
+        <hr>
+
+        <div class="chart">
+          <ul data-cord="[0,90,120,160,200,262,280,340,380,420,460,500],[140,70,40,90,40,60,120,20,60,90,10,40]" class="line-chart"></ul>
+          <!-- <ul data-cord="[x cords],[y cords]" class="line-chart"></ul> -->
+          <!-- x cords from 0 acsending, i.e 0,100,20 will not work -->
+          <!-- y cords 0 or positive value, i.e -40 will not work, graph only plots non-negative values -->
+        </div>
+
+        <h2>donut chart</h2>
+        <hr>
+
+        <div class="chart">
+          <div class="donut-chart" data-percent="0.61" data-title="uptime %"></div>
+          <!-- self explanatory -->
+        </div>
+
       </div>
 
-      <div class="chart">
-          <ul class="bar-chart" data-bars="[4,2],[4,5],[10,3],[4,2],[4,2]" data-max="10" data-unit="k" data-width="24"></ul>
-          <!-- <ul class="bar-chart" data-bars="[4,2],[4,5],[10,3],[4,2],[4,2]" data-max="10" data-unit="k" data-grid="0"></ul> -->
-          <!-- data max is the 100% point of the graph -->
-          <!-- set data-grid to 0 for no grid -->
-          <!-- data-width is the individual bars width -->
-      </div>
-
-      <div class="chart">
-        <div class="donut-chart" data-percent="0.61" data-title="uptime %"></div>
-        <!-- self explanatory -->
-      </div>
-
-      <div class="chart">
-        <ul data-cord="[0,90,120,160,200,262,280,340,380,420,460,500],[140,70,40,90,40,60,120,20,60,90,10,40]" class="line-chart"></ul>
-        <!-- <ul data-cord="[x cords],[y cords]" class="line-chart"></ul> -->
-        <!-- x cords from 0 acsending, i.e 0,100,20 will not work -->
-        <!-- y cords 0 or positive value, i.e -40 will not work, graph only plots non-negative values -->
-      </div>
-
-    <script>
-      // this is how you use it
-      $(function() {
-          $('.bar-chart').cssCharts({type:"bar"});
-          $('.donut-chart').cssCharts({type:"donut"}).trigger('show-donut-chart');
-          $('.line-chart').cssCharts({type:"line"});
-      });
-    </script>
+      <script>
+        // this is how you use it
+        $(function() {
+            $('.bar-chart').cssCharts({type:"bar"});
+            $('.donut-chart').cssCharts({type:"donut"}).trigger('show-donut-chart');
+            $('.line-chart').cssCharts({type:"line"});
+        });
+      </script>
     </body>
 </html>
