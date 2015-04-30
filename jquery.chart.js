@@ -219,6 +219,7 @@
                     height = Math.max.apply(Math, height) + 20;
 
                 $chart.css({width: width, height: height});
+                $chart.parent().css({width: width, height: height});
                 $chart.parent().addClass("line");
               };
 
@@ -243,9 +244,16 @@
 
                   $chart.append(triangle.node);
                   setPosition(triangle.node);
-              }
+                  setContWidth($chart, data);
 
-              setContWidth($chart, data);
+                  if(i % 2 == 0){
+                    var gridSpace = $chart.height() / 10;
+                    var gridNode = $("<hr/>").css({bottom: i*gridSpace});
+                    $chart.parent().append(gridNode);
+
+                    console.log(gridSpace, $chart.parent().height());
+                  }
+              }
             }
 
           };

@@ -226,25 +226,26 @@
 
 /* line chart */
 
-.chart.line{width:auto;height:auto;margin:0 auto;}
+.chart.line{width:auto;height:auto;margin:0 auto;position:relative;}
 .chart .line-chart{
-  min-width:400px;
-  min-height:200px;
+  min-width:100px;
+  min-height:100px;
   margin:100px auto;
   display:block;
   position:relative;
+  z-index:20;
 }
 
 /* line chart borders */
-.line-chart:before{
+/*.line-chart:before{
   content:"";
   display:block;
   position:absolute;
   left:0px;bottom:0px;
   height:100%;width:1px;
-  background:rgba(0,0,0,0.1);
+  background:rgb(238,238,238);
   padding-top:10px;
-}
+}*/
 
 .line-chart:after{
   content:"";
@@ -252,9 +253,21 @@
   position:absolute;
   left:0px;bottom:0px;
   width:100%;height:1px;
-  background:rgba(0,0,0,0.1);
+  background:rgb(238,238,238);
   padding-right:10px;
 }
+
+.chart.line hr{
+  position:absolute;
+  left:0px;
+  bottom:0px;
+  width:100%;
+  height:1px;
+  outline:none;
+  border:none;
+  background:rgb(238,238,238);
+}
+
 /* line chart borders */
 
 /* line chart line */
