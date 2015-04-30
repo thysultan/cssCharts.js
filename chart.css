@@ -49,7 +49,7 @@
   height: 100px;
 }
 
-.bar-chart span {
+.bar-chart span{
   margin: 0 6px;
   display: block;
   background: rgb(241,127,73);
@@ -59,7 +59,21 @@
   -webkit-animation: drawBar 0.3s ease-in-out;
   -moz-animation: drawBar 0.3s ease-in-out;
   animation: drawBar 0.3s ease-in-out;
+
+  -webkit-transition: all 100ms ease-in-out;
+  -moz-transition: all 100ms ease-in-out;
+  transition: all 100ms ease-in-out;
 }
+
+.bar-chart li:hover span{
+  box-shadow:0 0 0 4px rgb(241,127,73);
+  cursor:pointer;
+}
+
+.bar-chart li:nth-child(2n+1):hover span{
+  box-shadow:0 0 0 4px #bd380f;
+}
+
 .bar-chart li:nth-child(2n+1) span{background-color:#bd380f;}
 
 .bar-chart ul:last-of-type li:last-child span{margin-right:0px;}
@@ -72,7 +86,7 @@
 .bar-chart span:before {
   position: absolute;
   bottom: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   display: block;
   text-align: center;
   content: attr(title);
@@ -88,6 +102,8 @@
 }
 
 .bar-chart li span:before {
+  -webkit-transition: all 100ms ease-in-out;
+  -moz-transition: all 100ms ease-in-out;
   transition: all 100ms ease-in-out;
 }
 .bar-chart li:hover span:before {
@@ -108,6 +124,7 @@
 .donut-chart{
   width:100%;height:100%;
   position:relative;
+  cursor:pointer;
   /*overflow:hidden;*/
 }
 
