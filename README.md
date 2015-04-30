@@ -50,7 +50,7 @@ $('.line-chart').cssCharts({type:"line"});
 ### example bar chart
 
 ```html
-<ul class="bar-chart" data-bars="[x1,x2],[y1,y2]" data-max="10" data-unit="k" data-grid="1">
+<ul class="bar-chart" data-bars="[x1,x2],[y1,y2]" data-max="10" data-unit="k" data-grid="1" data-width="24">
 $('.bar-chart').cssCharts({type:"bar"});
 ```
 
