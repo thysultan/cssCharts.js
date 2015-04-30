@@ -241,6 +241,17 @@
   z-index:20;
 }
 
+.chart.line svg{
+  height: 100%;
+  width: 100%;
+  position:absolute;
+  top:0px;
+  left:0px;
+}
+.chart.line svg path{
+  fill: rgba(0,0,0,0.1);
+}
+
 .line-chart:after{
   content:"";
   display:block;
