@@ -1,1 +1,325 @@
-!function(a){a.fn.extend({cssCharts:function(c){var d={},c=a.extend(d,c);return this.each(function(){"bar"==c.type?b.bar(this):"donut"==c.type?b.donut(this):"line"==c.type?b.line(this):a(this).parent().hide()})}});var b={donut:function(b){var c=a(b),d=a(b).attr("data-percent"),e=a(b).attr("data-title");if(c.parent().addClass("donut"),e||(e="%"),d>1||0>d)return"between 0 - 1 please";var f=180,g=360,d=parseFloat(d).toFixed(2)*g,h=a("<div></div>").addClass("pie spinner"),i=a("<h2><p></p><span></span></h2>");i.find("p").text(100*(d/360)),i.find("span").text(e),c.on("show-donut-chart",function(){i.find("p").text(0),a({countNum:i.find("p").text()}).animate({countNum:100*(d/360)},{duration:500,easing:"linear",step:function(){i.find("p").text(Math.floor(this.countNum))},complete:function(){i.find("p").text(this.countNum)}}),c.on("hide-donut-chart",function(){i.find("p").text(0)})}),c.append(i);var j={nodes:{spinner:function(){return h.clone().attr("style","-webkit-transform: rotate("+j.values.spinner+"deg);"+"-moz-transform: rotate("+j.values.spinner+"deg);"+"transform: rotate("+j.values.spinner+"deg);")},mask:function(){return h.clone().addClass(j.values.selector).attr("style","-webkit-transform: rotate("+j.values.mask+"deg);"+"-moz-transform: rotate("+j.values.mask+"deg);"+"transform: rotate("+j.values.mask+"deg);")}},values:{spinner:d,mask:g,selector:""}},k=function(b){a.each(b,function(a,b){c.prepend(b())})};if(f>d){var l=d,m=jQuery.extend({},j);m.values.spinner=l,m.values.selector="mask",k(m.nodes)}else{var n=d-f,l=d-n;n+=f;var m=jQuery.extend({},j);m.values.spinner=l,m.values.mask=n,k(m.nodes)}},bar:function(b){var c=a(b);c.parent().addClass("bar");var d=c.attr("data-bars"),e=c.attr("data-unit"),f=c.height(),g=c.attr("data-grid"),h=c.attr("data-width"),i=c.attr("data-max");if(0===parseInt(g)&&c.css("background","none"),!d)return"No data to work with";e||(e="%");var j=function(){var a=JSON.parse("["+d+"]");return Math.max.apply(Math,a.map(function(a){return a[0]}))};(j()>i||!i)&&(i=j()),d=JSON.parse("[["+d+"]]"),d[0].length,a.each(d,function(b,g){var j=a("<ul></ul>"),k=a("<li><span></span></li>").height(f);for(b=0;b<d[0].length;b++){var l=j.clone();a.each(g[b],function(a){var f=k.clone(),g=d[0][b][a],j=g+e,m=100*(g/i);f.find("span").attr("title",j),h?f.find("span").attr("style","height:"+m+"%;"+"width:"+h+"px"):f.find("span").attr("style","height:"+m+"%"),l.append(f)}),c.append(l)}});var g=a("<div class='grid'></div>");c.parent().append(g);for(var l=0;10>=l;l++){var m=(10*l).toFixed(0),n=i/100,o=(m*n).toFixed(0);if(0==l%2){var p=a("<hr/>").css({bottom:m+"%"}).attr("data-y",o+e);c.parent().find(".grid").append(p)}}c.parent().width(c.width())},line:function(b){var c=function(b,c,d){var e=Math.round(Math.sqrt(Math.pow(c.width,2)+Math.pow(c.height,2))),f=c.height/e,g=Math.round(180*Math.asin(f)/Math.PI);g=-g;var h=a(d).clone().attr("style","width:"+e+"px;").attr("data-height",c.height).attr("data-width",c.width).attr("data-hypotenuse",e).attr("data-angle",g).attr("data-x",b.x).attr("data-y",b.y);return h.find("span").attr("style","width:"+e+"px;"+"-webkit-transform: rotate("+g+"deg);"+"-moz-transform: rotate("+g+"deg);"+"transform: rotate("+g+"deg);").attr("data-height",c.height).attr("data-width",c.width).attr("data-hypotenuse",e).attr("data-angle",g),h.find("a").attr("style","height:40px;width:40px;").attr("data-x",b.x).attr("data-y",b.y),{angle:g,hypo:e,width:c.width,height:c.height,node:h}},d=function(b){var c=a("ul").find(b).prev(),d=parseInt(a("ul").find(b).attr("data-width").replace("-","")),e=parseInt(a("ul").find(b).attr("data-height").replace("-","")),f=parseInt(a("ul").find(b).attr("data-y").replace("-",""));if(0===c.length)a("ul").find(b).attr("data-total-width",d),a("ul").find(b).css("left","0px"),a("ul").find(b).attr("data-total-height",f-e),a("ul").find(b).css("bottom",f+"px"),a("ul").find(b).attr("data-y",f),a("ul").find(b).attr("data-x",0);else{var g=parseInt(c.attr("data-total-width").replace("-",""));d=parseInt(c.attr("data-total-width").replace("-",""))+parseInt(b.attr("data-width").replace("-","")),a("ul").find(b).attr("data-total-width",d),a("ul").find(b).css("left",g+"px");var h=parseInt(c.attr("data-total-height").replace("-",""));e=parseInt(c.attr("data-total-height"))+parseInt(b.attr("data-height")),a("ul").find(b).attr("data-total-height",e),a("ul").find(b).css("bottom",h+"px"),a("ul").find(b).attr("data-y",h),a("ul").find(b).attr("data-x",g)}},e=function(a,b){var c=Math.floor(a.find("li:last-child").attr("data-x"))+20,d=b[1];d=Math.max.apply(Math,d)+20,a.css({width:c,height:d}),a.parent().css({width:c,height:d}),a.parent().addClass("line")},f=a(b),g=f.attr("data-cord");g=JSON.parse("["+g+"]");var h=g,i=a("<div class='grid'></div>");f.parent().append(i);for(var j=0;j<h[0].length;j++){g={x:h[0][j],y:h[1][j]};var k={width:h[0][j+1]-h[0][j],height:h[1][j+1]-h[1][j]},l=c(g,k,a("<li><span></span><a></a></li>"));if(f.append(l.node),d(l.node),e(f,h),0===j%2){var m=f.height()/10,n=a("<hr/>").css({bottom:j*m}).attr("data-y",j*m);f.parent().find(".grid").append(n)}}}}}(jQuery);
+/*
+ * cssCharts v0.1.0
+ * jquery plugin to create donut and bar charts with css
+ * https://github.com/sultantarimo
+ *
+ * (c)2015 Sultan Tarimo - sultantarimo@me.com
+ * Released under the MIT license
+ */
+
+(function($){
+  $.fn.extend({
+    cssCharts: function(options) {
+      var defaults = {}
+      var options =  $.extend(defaults, options);
+      return this.each(function() {
+          if(options.type == "bar"){thychart.bar(this);}
+          else if(options.type == "donut"){thychart.donut(this);}
+          else if(options.type == "line"){thychart.line(this);}
+          else{$(this).parent().hide();}
+      });
+    }
+  });
+
+  var thychart = {
+    donut: function(node){
+      var $chart   = $(node);
+      var val      = $(node).attr("data-percent");
+      var title    = $(node).attr("data-title");
+
+          $chart.parent().addClass("donut");
+
+      if(!title) title = "%";
+      if(val > 1 || val < 0) return("between 0 - 1 please");
+
+      var r        = 180;
+      var c        = 360;
+
+      var val      = parseFloat(val).toFixed(2)*c;
+      var $temp    = $('<div></div>').addClass("pie spinner");
+
+      var $title   = $("<h2><p></p><span></span></h2>");
+          $title.find("p").text(val/360*100);
+          $title.find("span").text(title);
+
+          $chart.on('show-donut-chart', function(){
+            $title.find("p").text(0);
+            $({countNum: $title.find("p").text()}).animate({countNum: val/360*100}, {
+              duration: 500,
+              easing:'linear',
+              step: function() {
+                $title.find("p").text(Math.floor(this.countNum));
+              },
+              complete: function() {
+                $title.find("p").text(this.countNum);
+              }
+            });
+            $chart.on('hide-donut-chart', function(){
+              $title.find("p").text(0);
+            });
+          });
+
+      $chart.append($title);
+
+      var chart = {
+        nodes: {
+          spinner: function(){
+            return $temp.clone().attr(
+              "style",
+
+              '-webkit-transform: rotate('+ chart.values.spinner +'deg);' +
+              '-moz-transform: rotate('+ chart.values.spinner +'deg);' +
+              'transform: rotate('+ chart.values.spinner +'deg);'
+              );
+          },
+          mask: function(){
+            return $temp.clone().addClass(chart.values.selector).attr(
+              "style",
+
+              '-webkit-transform: rotate('+ chart.values.mask + 'deg);' +
+              '-moz-transform: rotate('+ chart.values.mask + 'deg);' +
+              'transform: rotate('+ chart.values.mask + 'deg);'
+              );
+        }
+        },
+        values: {spinner: val, mask: c, selector: "" }
+      };
+      var prependNodes = function(data){
+        $.each(data, function(i, _node) {$chart.prepend(_node());});
+      };
+
+      // IF LESS THAN 50%
+      if(val < r){
+        var val1 = val;
+
+        var chart$clone = jQuery.extend({}, chart);
+            chart$clone.values.spinner = val1;
+            chart$clone.values.selector = "mask";
+
+        prependNodes(chart$clone.nodes);
+      }
+      // IF GREATER THAN 50%
+      else{
+        var val2 = val - r;
+        var val1 = val - val2;
+            val2 = val2 + r;
+
+        var chart$clone = jQuery.extend({}, chart);
+            chart$clone.values.spinner = val1;
+            chart$clone.values.mask = val2;
+
+        prependNodes(chart$clone.nodes);
+      }
+    },
+
+    bar: function(node){
+      var $node = $(node);
+
+          $node.parent().addClass("bar");
+
+      var data = $node.attr("data-bars");
+      var unit = $node.attr("data-unit");
+      var height = $node.height();
+      var grid = $node.attr("data-grid");
+      var barWidth = $node.attr("data-width");
+      var max = $node.attr("data-max");
+
+      if(parseInt(grid) === 0) $node.css("background", "none");
+
+      if(!data) return("No data to work with");
+      if(!unit) unit = "%";
+
+      // get max data point
+      var maxData = function(){
+        var arr = JSON.parse("[" + data + "]");
+        return Math.max.apply(Math, arr.map(function(i) { return i[0]; }));
+      };
+
+      // If "data-max" is not specified or if the heighest data-point is greater than data-max
+      if(maxData() > max || !max){ max = maxData(); }
+
+      data = JSON.parse("[[" + data + "]]");
+      var barsNo = data[0].length;
+
+      $.each(data, function(i, v) {
+        // first dimension
+        var uls = $("<ul></ul>");
+        var lis = $("<li><span></span></li>").height(height);
+
+        for (i = 0; i < data[0].length; i++){
+          var ul = uls.clone();
+
+          $.each(v[i], function(index, val) {
+            // second dimension
+            var li = lis.clone();
+
+            var value = (data[0][i][index]);
+            var title = value + unit;
+            var percent = (value/max) * 100;
+
+            li.find("span").attr("title", title);
+            if(!barWidth){
+              li.find("span").attr(
+                "style",
+                "height:" + percent + "%"
+                );
+            }else{
+              li.find("span").attr(
+                "style",
+                "height:" + percent + "%;" +
+                "width:" + barWidth + "px"
+                );
+            }
+            ul.append(li);
+          });
+          $node.append(ul);
+        }
+      });
+
+      var grid = $("<div class='grid'></div>");
+          $node.parent().append(grid);
+
+      for(var i = 0; i <= 10; i++) {
+        var toPerc = (i*10).toFixed(0);
+        var converter = max/100;
+        var toUnit = (toPerc * converter).toFixed(0);
+
+        if(i % 2 == 0){
+          var line = $("<hr/>").css({bottom: toPerc+"%"}).attr("data-y", toUnit + unit);
+          $node.parent().find(".grid").append(line);
+        }
+      }
+
+      $node.parent().width($node.width());
+    },
+
+    line: function(node){
+      var setAngle = function(cord, area, node){
+        var hypotenuse =  Math.round( Math.sqrt(Math.pow(area.width, 2) + Math.pow(area.height, 2)) );
+        var angSin = area.height / hypotenuse;
+        var ang = Math.round(Math.asin(angSin) * 180/Math.PI);
+            ang = -ang;
+
+        var $node = $(node).clone()
+                      .attr("style",
+                        'width:'+ hypotenuse +'px;'
+                        )
+                      .attr("data-height", area.height)
+                      .attr("data-width", area.width)
+                      .attr("data-hypotenuse", hypotenuse)
+                      .attr("data-angle", ang)
+                      .attr("data-x", cord.x)
+                      .attr("data-y", cord.y);
+
+            $node.find("span")
+              .attr(
+                "style",
+                'width:'+ hypotenuse +'px;' +
+                '-webkit-transform: rotate('+ ang +'deg);' +
+                '-moz-transform: rotate('+ ang +'deg);' +
+                'transform: rotate('+ ang +'deg);'
+              )
+              .attr("data-height", area.height)
+              .attr("data-width", area.width)
+              .attr("data-hypotenuse", hypotenuse)
+              .attr("data-angle", ang);
+
+            $node.find("a")
+              .attr(
+                "style",
+                'height:'+ 40 +'px;'+
+                'width:'+ 40 +'px;'
+                )
+              .attr("data-x", cord.x)
+              .attr("data-y", cord.y);
+
+        return({
+          angle: ang,
+          hypo: hypotenuse,
+          width: area.width,
+          height: area.height,
+          node: $node
+        });
+      };
+
+      var setPosition = function(data){
+        var prevNode = $("ul").find(data).prev();
+        var totalWidth = parseInt($("ul").find(data).attr("data-width").replace("-", ""));
+        var totalHeight = parseInt($("ul").find(data).attr("data-height").replace("-", ""));
+        var totalY = parseInt($("ul").find(data).attr("data-y").replace("-", ""));
+
+        if(prevNode.length === 0){
+          $("ul").find(data).attr("data-total-width",totalWidth);
+          $("ul").find(data).css("left",0 + "px");
+
+          $("ul").find(data).attr("data-total-height", totalY - totalHeight );
+          $("ul").find(data).css("bottom",totalY + "px");
+
+          $("ul").find(data).attr("data-y",totalY);
+          $("ul").find(data).attr("data-x",0);
+        }else{
+          var currentWidth = parseInt(prevNode.attr("data-total-width").replace("-", ""));
+              totalWidth = parseInt(prevNode.attr("data-total-width").replace("-", "")) + parseInt(data.attr("data-width").replace("-", ""));
+
+          $("ul").find(data).attr("data-total-width",totalWidth);
+          $("ul").find(data).css("left",currentWidth + "px");
+
+          var currentHeight = parseInt(prevNode.attr("data-total-height").replace("-", ""));
+              totalHeight = parseInt(prevNode.attr("data-total-height")) + parseInt(data.attr("data-height"));
+
+          $("ul").find(data).attr("data-total-height",totalHeight);
+          $("ul").find(data).css("bottom",currentHeight + "px");
+
+          $("ul").find(data).attr("data-y",currentHeight);
+          $("ul").find(data).attr("data-x",currentWidth);
+        }
+      };
+
+      var setContWidth = function($chart,data){
+        var width = Math.floor($chart.find("li:last-child").attr("data-x")) + 20;
+
+        var height = data[1];
+            height = Math.max.apply(Math, height) + 20;
+
+        $chart.css({width: width, height: height});
+        $chart.parent().css({width: width, height: height});
+        $chart.parent().addClass("line");
+      };
+
+      var $chart = $(node);
+      var cord = $chart.attr("data-cord");
+          cord = JSON.parse("[" + cord + "]");
+
+      var data = cord;
+
+      var grid = $("<div class='grid'></div>");
+          $chart.parent().append(grid);
+
+      for (var i = 0; i < data[0].length; i++) {
+          cord = {
+            x: data[0][i],
+            y: data[1][i]
+          };
+
+          var area = {
+            width:  data[0][i+1] - data[0][i],
+            height: data[1][i+1] - data[1][i]
+          };
+
+          var triangle = setAngle(cord, area, $("<li><span></span><a></a></li>"));
+
+          $chart.append(triangle.node);
+          setPosition(triangle.node);
+          setContWidth($chart, data);
+
+          if(i % 2 === 0){
+            var gridSpace = $chart.height() / 10;
+            var line = $("<hr/>").css({bottom: i*gridSpace}).attr("data-y", i*gridSpace);
+            $chart.parent().find(".grid").append(line);
+          }
+      }
+    }
+
+  };
+
+})(jQuery);

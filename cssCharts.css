@@ -42,7 +42,7 @@
 
 .bar-chart ul{
   margin-left: 34px;
-  float: right;
+  float: left;
   display: block;
   height:100%;
 }
@@ -83,7 +83,10 @@
 
 .bar-chart ul:last-of-type li:last-child span{margin-right:0px;}
 .bar-chart ul:first-of-type li:first-child span{margin-left:0px;}
-.bar-chart ul:last-of-type {margin-left: 0px;}
+
+.bar-chart ul:last-of-type {margin-right: 0px;}
+.bar-chart ul:first-of-type {margin-left: 0px;}
+
 .bar-chart.left-bar ul:last-of-type {margin-right: 0px;}
 
 .bar-chart.left-bar ul{margin-right: 34px;float:left;margin-left:0px;}
