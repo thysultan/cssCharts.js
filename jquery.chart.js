@@ -96,6 +96,7 @@
               var max = $node.attr("data-max");
               var height = $node.height();
               var grid = $node.attr("data-grid");
+              var barWidth = $node.attr("data-width");
 
               if(parseInt(grid) === 0) $node.css("background", "none");
 
@@ -124,7 +125,12 @@
                     var percent = (value/max) * 100;
 
                     li.find("span").attr("title", title);
-                    li.find("span").attr("style", "height:" + percent + "%");
+                    if(!barWidth){
+                      li.find("span").attr("style", "height:" + percent + "%");
+                    }else{
+                      li.find("span").attr("style", "height:" + percent + "%; width:" + barWidth + "px");
+                    }
+
 
                     ul.append(li);
                   });
