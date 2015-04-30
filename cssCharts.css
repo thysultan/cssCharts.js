@@ -20,7 +20,7 @@
 
 /* bar chart */
 
-.bar-chart {
+.bar-chart{
   display: table;
   table-layout: fixed;
   width: auto;
@@ -35,14 +35,14 @@
   padding-top: 26px;
 }
 
-.bar-chart ul {
+.bar-chart ul{
   margin-left: 34px;
   float: right;
   display: block;
   height:100%;
 }
 
-.bar-chart li {
+.bar-chart li{
   position: relative;
   display: table-cell;
   vertical-align: bottom;
@@ -105,9 +105,6 @@
   -webkit-transition: all 100ms ease-in-out;
   -moz-transition: all 100ms ease-in-out;
   transition: all 100ms ease-in-out;
-}
-.bar-chart li:hover span:before {
-  /*font-weight: bold;*/
 }
 
 @-webkit-keyframes drawBar {0% {height: 0;}}
@@ -235,18 +232,6 @@
   position:relative;
   z-index:20;
 }
-
-/* line chart borders */
-/*.line-chart:before{
-  content:"";
-  display:block;
-  position:absolute;
-  left:0px;bottom:-10px;
-  height: calc(100% + 10px);
-  width:1px;
-  background:rgb(238,238,238);
-  padding-top:10px;
-}*/
 
 .line-chart:after{
   content:"";
@@ -412,7 +397,6 @@
 /* line chart points */
 
 .line-chart li:first-child{margin-left:0px;}
-
 
 /* line chart animation */
 @-webkit-keyframes drawLine {0% {width: 0;}}
