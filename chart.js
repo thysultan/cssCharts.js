@@ -271,7 +271,76 @@
        $chart.parent().addClass("line");
      };
 
+     var drawSVG = function(){
+       var svg = $(
+                 '<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">'+
+                 '<path d=""></path>' +
+                 '</svg>'
+                 );
+           $chart.parent().append(svg);
+
+       function convertToArrayOfObjects(data) {
+           var keys = data.shift(),
+               i = 0, k = 0,
+               obj = null,
+               output = [];
+
+           for (i = 0; i < data.length; i++) {
+               obj = {};
+
+               for (k = 0; k < keys.length; k++) {
+                 obj[k] = {
+                   x: keys[k],
+                   y: $chart.parent().find(".grid hr:last-child").attr("data-y")-data[i][k]
+                 }
+               }
+               output.push(obj);
+           }
+           return output[0];
+       }
+
+       var points = convertToArrayOfObjects(data);
+       var counter = 0;
+
+       function addPoint(x, y, isFirst){
+           if(isFirst == "last"){
+             var last = Object.keys(points).length-1;
+
+             var x1 = points[last].x;
+             var y1 = points[0].y;
+             var x2 = points[0].x;
+             var y2 = points[last].y;
+
+             console.log(x1,y1,x2,y2);
+
+             var new_point = "L" +
+             x1 +
+             "," +
+             x1 +
+             " L" +
+             0 +
+             "," +
+             x1 +
+             " Z";
+
+           }else{
+             var new_point = (isFirst? "M" : " L")+x+","+y;
+           }
+           $chart.parent().find("path").attr("d", $chart.parent().find("path").attr("d")+""+new_point);
+           counter++;
+           if(counter < Object.keys(points).length){
+               setTimeout(addPoint(points[counter].x, points[counter].y, false),200); // Add a new point after 200 milliseconds
+           }
+           if(counter == Object.keys(points).length){
+             setTimeout(addPoint(null, null, "last"),200);
+           }
+       }
+       addPoint(points[0].x, points[0].y, true);
+     };
+
      var $chart = $(node);
+     var fill = $chart.attr("data-fill");
+
      var cord = $chart.attr("data-cord");
          cord = JSON.parse("[" + cord + "]");
 
@@ -303,6 +372,11 @@
            $chart.parent().find(".grid").append(line);
          }
      }
+
+     if(fill){
+       drawSVG();
+     }
+
    }
 
  };

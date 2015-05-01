@@ -241,17 +241,6 @@
   z-index:20;
 }
 
-.chart.line svg{
-  height: 100%;
-  width: 100%;
-  position:absolute;
-  top:0px;
-  left:0px;
-}
-.chart.line svg path{
-  fill: rgba(0,0,0,0.1);
-}
-
 .line-chart:after{
   content:"";
   display:block;
@@ -300,7 +289,6 @@
 /* line chart line */
 .line-chart li{
   display:block;height:1px;
-  /*background:rgb(241,127,73);*/
   float:left;position:relative;
   position:absolute;
 
@@ -428,3 +416,23 @@
 @-webkit-keyframes drawLine {0% {width: 0;}}
 @-moz-keyframes drawLine {0% {width: 0;}}
 @keyframes drawLine {0% {width: 0;}}
+
+.chart.line svg,
+.chart.line > div{
+  height: 100%;
+  width: 100%;
+  position:absolute;
+  bottom:0px;
+  left:0px;
+}
+.chart.line svg path{
+  fill: rgba(241,127,73,0.0);
+  stroke: rgb(241,127,73);
+  stroke-width: 2px;
+}
+
+.chart.line .fill svg path{
+  fill: rgba(241,127,73,0.1);
+  stroke:none;
+  stroke-width:0px;
+}
