@@ -263,15 +263,8 @@ var thychart = {
     var drawSVG = function(type,pointers){
       var $svg = ".svg";
       if(type){
-        var $svg = $(
-                  '<div class="svg"><svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">'+
-                  '<path d=""></path>' +
-                  '<g class="points"></g>' +
-                  '</svg></div>'
-                  );
-
+        var $svg = $('<div class="svg"><svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><path d=""></path></svg></div>');
         $svg.addClass("fill");
-
         $chart.parent().append($svg);
       }
 
