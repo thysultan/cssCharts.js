@@ -1,12 +1,11 @@
 /*
- * cssCharts v0.1.0
+ * cssCharts v0.2.0
  * jquery plugin to create donut and bar charts with css
  * https://github.com/sultantarimo
  *
  * (c)2015 Sultan Tarimo - sultantarimo@me.com
  * Released under the MIT license
  */
-
 (function($){
   $.fn.extend({
     cssCharts: function(options) {
@@ -200,44 +199,10 @@ var thychart = {
       var ang = Math.round(Math.asin(angSin) * 180/Math.PI);
           ang = -ang;
 
-      var $node = $(node).clone()
-                    .attr("style",
-                      'width:'+ hypotenuse +'px;'
-                      )
-                    .attr("data-height", area.height)
-                    .attr("data-width", area.width)
-                    .attr("data-hypotenuse", hypotenuse)
-                    .attr("data-angle", ang)
-                    .attr("data-x", cord.x)
-                    .attr("data-y", cord.y);
-
-          $node.find("span")
-            .attr(
-              "style",
-              'width:'+ hypotenuse +'px;' +
-              '-webkit-transform: rotate('+ ang +'deg);' +
-              '-moz-transform: rotate('+ ang +'deg);' +
-              'transform: rotate('+ ang +'deg);'
-            )
-            .attr("data-height", area.height)
-            .attr("data-width", area.width)
-            .attr("data-hypotenuse", hypotenuse)
-            .attr("data-angle", ang);
-
-          $node.find("a")
-            .attr(
-              "style",
-              'height:'+ 40 +'px;'+
-              'width:'+ 40 +'px;'
-              )
-            .attr("data-x", cord.x)
-            .attr("data-y", cord.y);
+      var $node = $(node).clone();
+          $node.find("a").attr("data-x", cord.x).attr("data-y", cord.y);
 
       return({
-        angle: ang,
-        hypo: hypotenuse,
-        width: area.width,
-        height: area.height,
         node: $node
       });
     };
@@ -264,7 +229,7 @@ var thychart = {
       var $svg = ".svg";
       if(type){
         var $svg = $('<div class="svg"><svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><path d=""></path></svg></div>');
-        $svg.addClass("fill");
+        if(type==2){$svg.addClass("fill");}
         $chart.parent().append($svg);
       }
 
@@ -319,7 +284,7 @@ var thychart = {
           if(counter < Object.keys(points).length){
               setTimeout(addPoint(points[counter].x, points[counter].y, false),200); // Add a new point after 200 milliseconds
           }
-          if(counter == Object.keys(points).length && type){
+          if(counter == Object.keys(points).length && type ==2){
             setTimeout(addPoint(null, null, "last"),200);
           }
       };
@@ -342,6 +307,7 @@ var thychart = {
         $chart.parent().append(grid);
     var $pointsCont = $('<g class="points"></g>');
     var area;
+    var cssLines = 0;
 
     for (var i = 0; i < data[0].length; i++) {
         cord = {
@@ -367,10 +333,9 @@ var thychart = {
         }
     }
 
-    drawSVG();
-    if(fill){drawSVG(1);}
+    drawSVG(1);
+    if(fill){drawSVG(2);}
   }
 
 };
-
 })(jQuery);

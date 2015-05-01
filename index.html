@@ -7,18 +7,17 @@
         <title>cssCharts.js</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
-        <!-- You need only this -->
         <link rel="stylesheet" href="cssCharts.css">
         <script src="jquery.chart.js"></script>
-        <!-- You need only this -->
 
         <style>
-          .chart{margin:40px auto;}
+          /* page specific styles*/
           h1{text-align:center;font-family:sans-serif;font-size:28px;color:#333;padding:40px 0 0 0;}
           h2{text-align:center;font-family:sans-serif;font-size:18px;color:#333;padding:40px 0 0 0;}
+          hr{width:60%;height:1px;background:none;border:none;border-bottom:1px dashed rgba(0,0,0,0.1);outline:none;margin:40px auto 60px auto;}
+
           .desc p{text-align:center;font-size:16px;color:rgba(0,0,0,0.6);padding:20px 0 0 0;font-family:sans-serif;}
           .desc a{color:blue;}
-          hr{width:60%;height:1px;background:none;border:none;border-bottom:1px dashed rgba(0,0,0,0.1);outline:none;margin:40px auto 0px auto;}
           .wrap{margin:0 auto;width:640px;padding-bottom:100px;}
           /* page specific styles*/
         </style>
@@ -38,19 +37,16 @@
 
         <div class="chart">
             <ul class="bar-chart" data-bars="[4,2],[4,5],[8,3],[4,2],[4,2]" data-fill="1" data-max="10" data-unit="k" data-width="24"></ul>
-            <!-- <ul class="bar-chart" data-bars="[4,2],[4,5],[10,3],[4,2],[4,2]" data-max="10" data-unit="k" data-grid="0"></ul> -->
-            <!-- data max is the 100% point of the graph -->
-            <!-- set data-grid to 0 for no grid -->
-            <!-- data-width is the individual bars width -->
         </div>
+        <!-- data max is the 100% point of the graph -->
+        <!-- set data-grid to 0 for no grid -->
+        <!-- data-width is the individual bars width -->
 
         <h2>line chart v1</h2>
         <hr>
 
         <div class="chart">
           <ul data-cord="[0,90,120,160,200,262,280,340,380,420,460],[140,150,40,90,40,60,120,20,60,90,10]" class="line-chart"></ul>
-          <!-- x cords from 0 acsending, i.e 0,100,20 will not work -->
-          <!-- y cords 0 or positive value, i.e -40 will not work, graph only plots non-negative values -->
         </div>
 
         <h2>line chart v2</h2>
@@ -58,21 +54,19 @@
 
         <div class="chart">
           <ul data-cord="[0,90,120,160,200,262,280,340,380,420,460],[140,150,40,90,40,60,120,20,60,90,10]" data-fill="1" class="line-chart"></ul>
-          <!-- same as above with an addition of data-fill -->
         </div>
+        <!-- same as above with an addition of data-fill -->
 
         <h2>donut chart</h2>
         <hr>
 
         <div class="chart">
           <div class="donut-chart" data-percent="0.61" data-title="uptime %"></div>
-          <!-- self explanatory -->
         </div>
 
       </div>
 
       <script>
-        // this is how you use it
         $(function() {
             $('.bar-chart').cssCharts({type:"bar"});
             $('.donut-chart').cssCharts({type:"donut"}).trigger('show-donut-chart');
