@@ -1,5 +1,5 @@
 /*
- * cssCharts v0.2.0
+ * cssCharts v0.3.0
  * jquery plugin to create donut and bar charts with css
  * https://github.com/sultantarimo
  *
@@ -221,7 +221,7 @@
 .chart .line-chart{
   min-width:100px;
   min-height:100px;
-  margin:100px auto;
+  margin:0px auto;
   display:block;
   position:relative;
   z-index:20;

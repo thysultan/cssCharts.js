@@ -1,5 +1,5 @@
 /*
- * cssCharts v0.2.0
+ * cssCharts v0.3.0
  * jquery plugin to create donut and bar charts with css
  * https://github.com/sultantarimo
  *
@@ -207,12 +207,17 @@ var thychart = {
       $("ul").find(data).css("bottom",cord.y + "px");
     };
 
-    var setContainerDimensions = function($chart,data){
-      var height = data[1];
-          height = Math.max.apply(Math, height) + 20;
+    var setContainerDimensions = function($chart,val){
+      var height = [];
+      var width = [];
 
-      var width = data[0];
-          width = Math.max.apply(Math, width) + 20;
+      $.each(val, function(index, value) {
+        $.each(val[index][1], function(index, value) {height.push(value);});
+        $.each(val[index][0], function(index, value) {width.push(value);});
+      });
+
+      height = Math.max.apply(Math, height) + 20;
+      width = Math.max.apply(Math, width) + 20;
 
       $chart.css({width: width, height: height});
       $chart.parent().css({width: width, height: height});
@@ -221,8 +226,8 @@ var thychart = {
       return {width:width,height:height};
     };
 
-    var convertToArrayOfObjects = function() {
-        var dataClone = data.slice(0),
+    var convertToArrayOfObjects = function(val, height) {
+        var dataClone = val.slice(0),
             keys = dataClone.shift(),
             i = 0,
             k = 0,
@@ -235,7 +240,7 @@ var thychart = {
             for (k = 0; k < keys.length; k++) {
               obj[k] = {
                 x: keys[k],
-                y: container.height-dataClone[i][k]
+                y: height-dataClone[i][k]
               };
             }
             output.push(obj);
@@ -243,16 +248,17 @@ var thychart = {
         return output[0];
     };
 
-    var drawSVG = function(type){
+    var drawSVG = function(type, val, height, index){
       var $svg = ".svg";
 
       if(type){
         $svg = $('<div class="svg"><svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><path class="path" d=""></path></svg></div>');
+        $svg.addClass(".p"+index);
         if(type==2){$svg.addClass("fill");}
         $chart.parent().append($svg);
       }
 
-      var points = convertToArrayOfObjects();
+      var points = convertToArrayOfObjects(val, height);
       var counter = 0;
 
       var addPoint = function(x, y, isFirst){
@@ -284,23 +290,23 @@ var thychart = {
     var grid = $("<div class='grid'></div>");
         $chart.parent().append(grid);
     var $pointsCont = $('<g class="points"></g>');
-    var area;
-    var cssLines = 0;
+    var container;
 
+    var oneDim = "[" + $chart.attr("data-cord") + "]";
     var cord = $chart.attr("data-cord");
         cord = JSON.parse("[" + cord + "]");
-    var data = cord;
-    var container = setContainerDimensions($chart, data);
 
-    var loopCord = function(){
-      for (var i = 0; i < data[0].length; i++) {
+    if(cord[0].length !== 2){
+      cord = JSON.parse("[" + oneDim + "]");
+    }
+
+    var height = setContainerDimensions($chart, cord).height;
+
+    var loopCord = function(index, val, height){
+      for (var i = 0; i < val[index].length; i++) {
           cord = {
-            x: data[0][i],
-            y: data[1][i]
-          };
-          area = {
-            width:  data[0][i+1] - data[0][i],
-            height: data[1][i+1] - data[1][i]
+            x: val[0][i],
+            y: val[1][i]
           };
 
           var point = setPoint(cord, $("<li><span></span><a></a></li>"));
@@ -309,15 +315,22 @@ var thychart = {
               setPosition(point, cord);
 
           if(i % 2 === 0){
-            var gridSpace = $chart.height() / 10;
+            var gridSpace = height / 10;
             var line = $("<hr/>").css({bottom: i*gridSpace}).attr("data-y", i*gridSpace);
             $chart.parent().find(".grid").append(line);
           }
       }
-    }();
 
-    drawSVG(1);
-    if(fill){drawSVG(2);}
+        drawSVG(1, val, height, index);
+      if(fill){
+        drawSVG(2, val, height, index);
+      }
+    };
+
+    $.each(cord, function(i, val) {
+       loopCord(i, val, height);
+    });
+
   }
 };
 })(jQuery);
