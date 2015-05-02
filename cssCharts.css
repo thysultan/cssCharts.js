@@ -227,6 +227,7 @@
   z-index:20;
 }
 
+/* line chart borders and grids */
 .line-chart:after{
   content:"";
   display:block;
@@ -269,28 +270,18 @@
   -moz-transform:translateX(-50%) translateY(-50%);
   transform:translateX(-50%) translateY(-50%);
 }
-
-/* line chart borders */
+/* line chart borders and grids */
 
 /* line chart line */
 .line-chart li{
   display:block;height:1px;
   float:left;position:relative;
   position:absolute;
-
-  -webkit-transform-origin: bottom left;
-    -moz-transform-origin: bottom left;
-    transform-origin: bottom left;
-
-  -webkit-animation: drawLine 0.4s ease-in-out;
-    -moz-animation: drawLine 0.4s ease-in-out;
-    animation: drawLine 0.4s ease-in-out;
 }
 
+/* line chart points tooltip */
 .line-chart li a:hover:before,
-.line-chart li a:hover:after{
-  display:block;z-index:10;
-}
+.line-chart li a:hover:after{display:block;z-index:10;}
 .line-chart li a:before{
   content:attr(data-y);
   cursor:pointer;
@@ -350,25 +341,17 @@
   -moz-transform:translateX(-50%) translateY(-50%);
   transform:translateX(-50%) translateY(-50%);
 }
+/* line chart points tooltip */
 
-/* line chart line */
+/* line chart points */
+
 .line-chart li span{
   display:block;height:1px;
   background:rgb(241,127,73);
-  /*border: 1px dashed rgb(241,127,73); used this instead of background for dashed lines*/
   float:left;
   position:absolute;
-
-  -webkit-transform-origin: bottom left;
-    -moz-transform-origin: bottom left;
-    transform-origin: bottom left;
-
-  -webkit-animation: drawLine 0.4s ease-in-out;
-    -moz-animation: drawLine 0.4s ease-in-out;
-    animation: drawLine 0.4s ease-in-out;
 }
 
-/* line chart points */
 .line-chart li span:before{
   content:"";
   position:absolute;
@@ -398,13 +381,7 @@
 }
 /* line chart points */
 
-.line-chart li:first-child{margin-left:0px;}
-
-/* line chart animation */
-@-webkit-keyframes drawLine {0% {width: 0;}}
-@-moz-keyframes drawLine {0% {width: 0;}}
-@keyframes drawLine {0% {width: 0;}}
-
+/* line chart line */
 .chart.line svg,
 .chart.line > div{
   height: 100%;
@@ -412,11 +389,17 @@
   position:absolute;
   bottom:0px;
   left:0px;
+
+  -webkit-animation: drawLine .6s ease-in-out;
+    -moz-animation: drawLine .6s ease-in-out;
+    animation: drawLine .6s ease-in-out;
 }
 .chart.line svg path{
   fill: rgba(241,127,73,0.0);
   stroke: rgb(241,127,73);
   stroke-width: 2px;
+  /*if you want it dashed instead of filled*/
+  stroke-dasharray: 3;
 }
 
 .chart.line .fill svg path{
@@ -424,3 +407,8 @@
   stroke:none;
   stroke-width:0px;
 }
+
+/* line chart animation */
+@-webkit-keyframes drawLine {0% {width: 0;}}
+@-moz-keyframes drawLine {0% {width: 0;}}
+@keyframes drawLine {0% {width: 0;}}

@@ -228,7 +228,7 @@ var thychart = {
     var drawSVG = function(type,pointers){
       var $svg = ".svg";
       if(type){
-        var $svg = $('<div class="svg"><svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><path d=""></path></svg></div>');
+        var $svg = $('<div class="svg"><svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><path class="path" d=""></path></svg></div>');
         if(type==2){$svg.addClass("fill");}
         $chart.parent().append($svg);
       }
@@ -261,42 +261,27 @@ var thychart = {
       var addPoint = function(x, y, isFirst){
           if(isFirst == "last"){
             var last = Object.keys(points).length-1;
-
             var x1 = points[last].x;
             var y1 = points[0].y;
             var x2 = points[0].x;
             var y2 = points[last].y;
 
-            var new_point = " L" +
-            x1 +
-            "," +
-            x1 +
-            " L" +
-            0 +
-            "," +
-            x1 +
-            " Z";
+            var new_point = " L" + x1 + "," + x1 + " L" + 0 + "," + x1 +" Z";
           }else{
-            var new_point = (isFirst? "M" : " L")+x+","+y;
-          }
+            var new_point = (isFirst? "M" : " ")+x+","+y;
+          };
           $chart.parent().find($svg).find("path").attr("d", $chart.parent().find($svg).find("path").attr("d")+""+new_point);
           counter++;
           if(counter < Object.keys(points).length){
-              setTimeout(addPoint(points[counter].x, points[counter].y, false),200); // Add a new point after 200 milliseconds
+              setTimeout(addPoint(points[counter].x, points[counter].y, false),0); // Add a new point after 200 milliseconds
           }
           if(counter == Object.keys(points).length && type ==2){
-            setTimeout(addPoint(null, null, "last"),200);
+            setTimeout(addPoint(null, null, "last"),0);
           }
       };
       addPoint(points[0].x, points[0].y, true);
 
     };
-
-    var setPoints = function(cords){
-        var $point = null;
-        if(cords){ var $point = $('<circle cx="' + cords.x + '" cy="' + cords.y + '" data-value="10" r="5"></circle>'); }
-        return $point;
-    }
 
     var $chart = $(node);
     var fill = $chart.attr("data-fill");
@@ -319,12 +304,11 @@ var thychart = {
           height: data[1][i+1] - data[1][i]
         };
 
-        var pointers = setPoints(cord);
         var triangle = setAngle(cord, area, $("<li><span></span><a></a></li>"));
-        $chart.append(triangle.node);
-        setPosition(triangle.node, cord);
 
-        setContWidth($chart, data);
+            $chart.append(triangle.node);
+            setPosition(triangle.node, cord);
+            setContWidth($chart, data);
 
         if(i % 2 === 0){
           var gridSpace = $chart.height() / 10;
@@ -336,6 +320,5 @@ var thychart = {
     drawSVG(1);
     if(fill){drawSVG(2);}
   }
-
 };
 })(jQuery);
