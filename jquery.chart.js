@@ -8,13 +8,13 @@
  */
 (function($){
   $.fn.extend({
-    cssCharts: function(options) {
-      var defaults = {}
-      var options =  $.extend(defaults, options);
+    cssCharts: function(opts) {
+      var defs = {};
+          opts =  $.extend(defs, opts);
       return this.each(function() {
-          if(options.type == "bar"){thychart.bar(this);}
-          else if(options.type == "donut"){thychart.donut(this);}
-          else if(options.type == "line"){thychart.line(this);}
+          if(opts.type == "bar"){thychart.bar(this);}
+          else if(opts.type == "donut"){thychart.donut(this);}
+          else if(opts.type == "line"){thychart.line(this);}
           else{$(this).parent().hide();}
       });
     }
@@ -34,7 +34,7 @@ var thychart = {
     var r        = 180;
     var c        = 360;
 
-    var val      = parseFloat(val).toFixed(2)*c;
+        val      = parseFloat(val).toFixed(2)*c;
     var $temp    = $('<div></div>').addClass("pie spinner");
 
     var $title   = $("<h2><p></p><span></span></h2>");
@@ -88,24 +88,26 @@ var thychart = {
     };
 
     // IF LESS THAN 50%
-    if(val < r){
-      var val1 = val;
+    var chart$clone,val1,val2;
 
-      var chart$clone = jQuery.extend({}, chart);
-          chart$clone.values.spinner = val1;
-          chart$clone.values.selector = "mask";
+    if(val < r){
+      val1 = val;
+
+      chart$clone = jQuery.extend({}, chart);
+      chart$clone.values.spinner = val1;
+      chart$clone.values.selector = "mask";
 
       prependNodes(chart$clone.nodes);
     }
     // IF GREATER THAN 50%
     else{
-      var val2 = val - r;
-      var val1 = val - val2;
-          val2 = val2 + r;
+      val2 = val - r;
+      val1 = val - val2;
+      val2 = val2 + r;
 
-      var chart$clone = jQuery.extend({}, chart);
-          chart$clone.values.spinner = val1;
-          chart$clone.values.mask = val2;
+      chart$clone = jQuery.extend({}, chart);
+      chart$clone.values.spinner = val1;
+      chart$clone.values.mask = val2;
 
       prependNodes(chart$clone.nodes);
     }
@@ -123,7 +125,7 @@ var thychart = {
     var barWidth = $node.attr("data-width");
     var max = $node.attr("data-max");
 
-    if(parseInt(grid) === 0) $node.css("background", "none");
+    if(parseInt(grid,10) === 0) $node.css("background", "none");
 
     if(!data) return("No data to work with");
     if(!unit) unit = "%";
@@ -171,19 +173,20 @@ var thychart = {
           }
           ul.append(li);
         });
+
         $node.append(ul);
       }
     });
 
-    var grid = $("<div class='grid'></div>");
-        $node.parent().append(grid);
+    var $grid = $("<div class='grid'></div>");
+        $node.parent().append($grid);
 
     for(var i = 0; i <= 10; i++) {
       var toPerc = (i*10).toFixed(0);
       var converter = max/100;
       var toUnit = (toPerc * converter).toFixed(0);
 
-      if(i % 2 == 0){
+      if(i % 2 === 0){
         var line = $("<hr/>").css({bottom: toPerc+"%"}).attr("data-y", toUnit + unit);
         $node.parent().find(".grid").append(line);
       }
@@ -193,18 +196,10 @@ var thychart = {
   },
 
   line: function(node){
-    var setAngle = function(cord, area, node){
-      var hypotenuse =  Math.round( Math.sqrt(Math.pow(area.width, 2) + Math.pow(area.height, 2)) );
-      var angSin = area.height / hypotenuse;
-      var ang = Math.round(Math.asin(angSin) * 180/Math.PI);
-          ang = -ang;
-
+    var setPoint = function(cord, node){
       var $node = $(node).clone();
           $node.find("a").attr("data-x", cord.x).attr("data-y", cord.y);
-
-      return({
-        node: $node
-      });
+      return $node;
     };
 
     var setPosition = function(data, cord){
@@ -212,8 +207,7 @@ var thychart = {
       $("ul").find(data).css("bottom",cord.y + "px");
     };
 
-    var setContWidth = function($chart,data){
-
+    var setContainerDimensions = function($chart,data){
       var height = data[1];
           height = Math.max.apply(Math, height) + 20;
 
@@ -223,99 +217,104 @@ var thychart = {
       $chart.css({width: width, height: height});
       $chart.parent().css({width: width, height: height});
       $chart.parent().addClass("line");
+
+      return {width:width,height:height};
     };
 
-    var drawSVG = function(type,pointers){
+    var convertToArrayOfObjects = function() {
+        var dataClone = data.slice(0),
+            keys = dataClone.shift(),
+            i = 0,
+            k = 0,
+            obj = null,
+            output = [];
+
+        for (i = 0; i < dataClone.length; i++) {
+            obj = {};
+
+            for (k = 0; k < keys.length; k++) {
+              obj[k] = {
+                x: keys[k],
+                y: container.height-dataClone[i][k]
+              };
+            }
+            output.push(obj);
+        }
+        return output[0];
+    };
+
+    var drawSVG = function(type){
       var $svg = ".svg";
+
       if(type){
-        var $svg = $('<div class="svg"><svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><path class="path" d=""></path></svg></div>');
+        $svg = $('<div class="svg"><svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><path class="path" d=""></path></svg></div>');
         if(type==2){$svg.addClass("fill");}
         $chart.parent().append($svg);
       }
-
-      var convertToArrayOfObjects = function() {
-          var dataClone = data.slice(0),
-              keys = dataClone.shift(),
-              i = 0,
-              k = 0,
-              obj = null,
-              output = [];
-
-          for (i = 0; i < dataClone.length; i++) {
-              obj = {};
-
-              for (k = 0; k < keys.length; k++) {
-                obj[k] = {
-                  x: keys[k],
-                  y: $chart.parent().find(".grid hr:last-child").attr("data-y")-dataClone[i][k]
-                }
-              }
-              output.push(obj);
-          }
-          return output[0];
-      };
 
       var points = convertToArrayOfObjects();
       var counter = 0;
 
       var addPoint = function(x, y, isFirst){
-          if(isFirst == "last"){
-            var last = Object.keys(points).length-1;
-            var x1 = points[last].x;
-            var y1 = points[0].y;
-            var x2 = points[0].x;
-            var y2 = points[last].y;
+          var new_point;
+          var last = Object.keys(points).length-1;
 
-            var new_point = " L" + x1 + "," + x1 + " L" + 0 + "," + x1 +" Z";
+          if(isFirst == "last"){
+            new_point = " L" + points[last].x + "," + points[last].x + " L" + 0 + "," + points[last].x +" Z";
           }else{
-            var new_point = (isFirst? "M" : " ")+x+","+y;
-          };
+            new_point = (isFirst? "M" : " ")+x+","+y;
+          }
+
           $chart.parent().find($svg).find("path").attr("d", $chart.parent().find($svg).find("path").attr("d")+""+new_point);
           counter++;
+
           if(counter < Object.keys(points).length){
               setTimeout(addPoint(points[counter].x, points[counter].y, false),0); // Add a new point after 200 milliseconds
           }
+
           if(counter == Object.keys(points).length && type ==2){
             setTimeout(addPoint(null, null, "last"),0);
           }
       };
       addPoint(points[0].x, points[0].y, true);
-
     };
 
     var $chart = $(node);
     var fill = $chart.attr("data-fill");
-    var cord = $chart.attr("data-cord");
-        cord = JSON.parse("[" + cord + "]");
-    var data = cord;
     var grid = $("<div class='grid'></div>");
         $chart.parent().append(grid);
     var $pointsCont = $('<g class="points"></g>');
     var area;
     var cssLines = 0;
 
-    for (var i = 0; i < data[0].length; i++) {
-        cord = {
-          x: data[0][i],
-          y: data[1][i]
-        };
-        area = {
-          width:  data[0][i+1] - data[0][i],
-          height: data[1][i+1] - data[1][i]
-        };
+    var cord = $chart.attr("data-cord");
+        cord = JSON.parse("[" + cord + "]");
+    var data = cord;
+    var container = setContainerDimensions($chart, data);
 
-        var triangle = setAngle(cord, area, $("<li><span></span><a></a></li>"));
+    var loopCord = function(){
+      for (var i = 0; i < data[0].length; i++) {
+          cord = {
+            x: data[0][i],
+            y: data[1][i]
+          };
+          area = {
+            width:  data[0][i+1] - data[0][i],
+            height: data[1][i+1] - data[1][i]
+          };
 
-            $chart.append(triangle.node);
-            setPosition(triangle.node, cord);
-            setContWidth($chart, data);
+          var point = setPoint(cord, $("<li><span></span><a></a></li>"));
 
-        if(i % 2 === 0){
-          var gridSpace = $chart.height() / 10;
-          var line = $("<hr/>").css({bottom: i*gridSpace}).attr("data-y", i*gridSpace);
-          $chart.parent().find(".grid").append(line);
-        }
-    }
+              $chart.append(point);
+              setPosition(point, cord);
+
+          if(i % 2 === 0){
+            var gridSpace = $chart.height() / 10;
+            var line = $("<hr/>").css({bottom: i*gridSpace}).attr("data-y", i*gridSpace);
+            $chart.parent().find(".grid").append(line);
+          }
+      }
+    }();
 
     drawSVG(1);
     if(fill){drawSVG(2);}
