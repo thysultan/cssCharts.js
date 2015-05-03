@@ -245,9 +245,8 @@
 
 .chart.pie svg path:hover{
   fill:#CCC;
-/*  stroke:#FFF;
-  stroke-width:10px;*/
-  /* TODO: <use xlink:href="#shape2" /> for z-index */
+  stroke:#FFF;
+  stroke-width:10px;
 }
 
 .charts-tip{
