@@ -95,6 +95,15 @@
         </div>
         <!-- single graph [x cords],[y cords] -->
 
+
+        <br><br><br>
+        <h2> test pie chart v1</h2>
+        <hr>
+
+        <div class="chart">
+          <div class="pie-thychart" data-set='[["people", 20], ["countries",30], ["developers",60]]'></div>
+        </div>
+
       </div>
 
       <script>
@@ -102,6 +111,8 @@
             $('.bar-chart').cssCharts({type:"bar"});
             $('.donut-chart').cssCharts({type:"donut"}).trigger('show-donut-chart');
             $('.line-chart').cssCharts({type:"line"});
+
+            $('.pie-thychart').cssCharts({type:"pie"});
         });
       </script>
     </body>

@@ -13,14 +13,123 @@
           opts =  $.extend(defs, opts);
       return this.each(function() {
           if(opts.type == "bar"){thychart.bar(this);}
-          else if(opts.type == "donut"){thychart.donut(this);}
           else if(opts.type == "line"){thychart.line(this);}
+          else if(opts.type == "donut"){thychart.donut(this);}
+          else if(opts.type == "pie"){thychart.pie(this);}
           else{$(this).parent().hide();}
       });
     }
   });
 
 var thychart = {
+  pie: function(node){
+    var makeSVG = function(tag, attrs, val, title) {
+      var el = $(document.createElementNS('http://www.w3.org/2000/svg', tag));
+
+      for (var k in attrs){
+          el.attr(k,attrs[k]).attr("data-val", val).attr("data-title",title);
+      }
+      return el[0];
+    };
+
+    var drawArcs = function($svg, pieData){
+      var titles = [];
+      var values = [];
+
+      $.each(pieData, function(index, value) {
+          values.push(value[1]);
+          titles.push(value[0]);
+      });
+
+          pieData = values;
+
+      var total = pieData.reduce(function (accu, that) { return that + accu; }, 0);
+      var sectorAngleArr = pieData.map(function (v) { return 360 * v / total; });
+
+      var startAngle = -90; // from the top instead of side
+      var endAngle = -90;
+      for (var i=0; i<sectorAngleArr.length; i++){
+          startAngle = endAngle;
+          endAngle = startAngle + sectorAngleArr[i];
+
+          var x1,x2,y1,y2 ;
+
+          x1 = parseInt(Math.round(200 + 195*Math.cos(Math.PI*startAngle/180)));
+          y1 = parseInt(Math.round(200 + 195*Math.sin(Math.PI*startAngle/180)));
+
+          x2 = parseInt(Math.round(200 + 195*Math.cos(Math.PI*endAngle/180)));
+          y2 = parseInt(Math.round(200 + 195*Math.sin(Math.PI*endAngle/180)));
+
+          var d = "M200,200  L" + x1 + "," + y1 + "  A195,195 0 " +
+                  ((endAngle-startAngle > 180) ? 1 : 0) + ",1 " + x2 + "," + y2 + " z";
+
+          var rand = function(min, max) {
+              return parseInt(Math.random() * (max-min+1), 10) + min;
+          }
+
+          var get_random_color = function () {
+              var h = rand(180, 250); // color hue between 180 and 250
+              var s = rand(30, 100); // saturation 30-100%
+              var l = rand(30, 70); // lightness 30-70%
+              return 'hsl(' + h + ',' + s + '%,' + l + '%)';
+          }
+
+          var c = parseInt(i / sectorAngleArr.length * 360);
+          // var randomFill = get_random_color();
+          var randomFill = "hsl(" + c + ", 60%, 50%)";
+
+          var arc = makeSVG("path", {d: d, fill: randomFill}, pieData[i], titles[i]);
+          $svg.append(arc);
+
+          $chart.append($svg);
+      }
+    };
+
+
+    var $chart   = $(node);
+    var dataSet  = $(node).attr("data-set");
+
+    var val = JSON.parse(dataSet);
+
+    var $svg     = $('<svg viewBox="0 0 400 400"></svg>');
+
+        $chart.parent().addClass("pie");
+        drawArcs($svg, val);
+
+    var mPos = {x: -1,y: -1};
+
+    var getMousePos = function(){
+      var $tooltip = $('<div class="charts-tip"></div>');
+
+      $chart.mousemove(function(e) {
+          mPos.x = e.pageX;
+          mPos.y = e.pageY;
+          var $target = $(e.target);
+          var val = $target.attr("data-val");
+          var title = $target.attr("data-title");
+
+          if(val){
+            $("body").find("."+$tooltip.attr("class")).remove();
+
+            $tooltip.css({
+              left: mPos.x,
+              top: mPos.y
+            });
+
+            $tooltip.html(title+": " + val);
+
+            $("body").append($tooltip);
+          }
+      });
+
+      $chart.mouseleave(function(e) {
+        $("body").find("."+$tooltip.attr("class")).remove();
+      });
+
+    }();
+
+
+  },
   donut: function(node){
     var $chart   = $(node);
     var val      = $(node).attr("data-percent");
@@ -252,7 +361,8 @@ var thychart = {
       var $svg = ".svg";
 
       if(type){
-        $svg = $('<div class="svg"><svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><path class="path" d=""></path></svg></div>');
+        $svg = $('<div class="svg"><svg><path class="path" d=""></path></svg></div>');
+
         $svg.addClass(".p"+index);
         if(type==2){$svg.addClass("fill");}
         $chart.parent().append($svg);
