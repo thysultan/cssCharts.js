@@ -23,11 +23,11 @@
 
 var thychart = {
   pie: function(node){
-    var makeSVG = function(tag, attrs, val, title) {
+    var makeSVG = function(tag, attrs, val, title, i) {
       var el = $(document.createElementNS('http://www.w3.org/2000/svg', tag));
 
       for (var k in attrs){
-          el.attr(k,attrs[k]).attr("data-val", val).attr("data-title",title);
+          el.attr(k,attrs[k]).attr("data-val", val).attr("data-title",title).attr("id","path"+i).attr("class","path");
       }
       return el[0];
     };
@@ -78,8 +78,8 @@ var thychart = {
           // var randomFill = get_random_color();
           var randomFill = "hsl(" + c + ", 60%, 50%)";
 
-          var arc = makeSVG("path", {d: d, fill: randomFill}, pieData[i], titles[i]);
-          $svg.append(arc);
+          var arc = makeSVG("path", {d: d, fill: randomFill}, pieData[i], titles[i], i);
+          $svg.prepend(arc);
 
           $chart.append($svg);
       }
@@ -91,7 +91,7 @@ var thychart = {
 
     var val = JSON.parse(dataSet);
 
-    var $svg     = $('<svg viewBox="0 0 400 400"></svg>');
+    var $svg     = $('<svg viewBox="0 0 400 400" class="svg"></svg>');
 
         $chart.parent().addClass("pie");
         drawArcs($svg, val);
@@ -104,25 +104,39 @@ var thychart = {
       $chart.mousemove(function(e) {
           mPos.x = e.pageX;
           mPos.y = e.pageY;
-          var $target = $(e.target);
+          var $target = $(e.target).clone();
+          var $last = $chart.find(".path:last-child");
           var val = $target.attr("data-val");
           var title = $target.attr("data-title");
+          var _id = $target.attr("id");
+          var $use = $('<use class="pathUse" xlink:href="#' + _id + '" />');
 
           if(val){
-            $("body").find("."+$tooltip.attr("class")).remove();
-
             $tooltip.css({
               left: mPos.x,
               top: mPos.y
             });
 
-            $tooltip.html(title+": " + val);
+            var setTooltip = function(){
+              $("body").find("."+$tooltip.attr("class")).remove();
+              $tooltip.html(title+": " + val);
+              $("body").append($tooltip);
+            }();
 
-            $("body").append($tooltip);
+            var setOrder = function(){
+              var $lastId = $last.attr("id");
+              var $targetId = $target.attr("id");
+
+              if($lastId !== $targetId){
+                $chart.find("#"+$target.attr("id")).remove();
+                $chart.find(".svg").append($target);
+              }
+            }();
           }
       });
 
       $chart.mouseleave(function(e) {
+        //  remove tooltip
         $("body").find("."+$tooltip.attr("class")).remove();
       });
 
