@@ -229,9 +229,26 @@
 .pie-chart:after{
   display:none;
 }
+.chart.donut .pie-chart h2,
+.chart.donut .pie-chart h2 span{color:#FFF;}
 
-.pie-chart h2,
-.pie-chart h2 span{color:#FFF;}
+/* new pie chart in progress */
+.chart.pie svg{width:100%;height:100%;}
+.chart.pie svg path:hover{opacity: 0.8;}
+
+.chart.pie {
+  width: 200px;
+  height: 200px;
+}
+
+.chart.pie svg path:nth-child(1n){
+ fill:#bd380f !important;
+}
+
+.chart.pie svg path:nth-child(2n){
+ fill:rgb(241,127,73) !important;
+}
+/* new pie chart progress */
 
 /* line chart */
 

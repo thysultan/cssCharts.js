@@ -13,14 +13,70 @@
           opts =  $.extend(defs, opts);
       return this.each(function() {
           if(opts.type == "bar"){thychart.bar(this);}
-          else if(opts.type == "donut"){thychart.donut(this);}
           else if(opts.type == "line"){thychart.line(this);}
+          else if(opts.type == "donut"){thychart.donut(this);}
+          else if(opts.type == "pie"){thychart.pie(this);}
           else{$(this).parent().hide();}
       });
     }
   });
 
 var thychart = {
+  pie: function(node){
+    var makeSVG = function(tag, attrs) {
+      var el = $(document.createElementNS('http://www.w3.org/2000/svg', tag));
+
+      for (var k in attrs)
+        if (attrs.hasOwnProperty(k)) {
+          el.attr(k,attrs[k]);
+        }
+      return el[0];
+    };
+
+    var drawArcs = function($svg, pieData){
+      var total = pieData.reduce(function (accu, that) { return that + accu; }, 0);
+      var sectorAngleArr = pieData.map(function (v) { return 360 * v / total; });
+
+      var startAngle = -90; // from the top instead of side
+      var endAngle = -90;
+      for (var i=0; i<sectorAngleArr.length; i++){
+          startAngle = endAngle;
+          endAngle = startAngle + sectorAngleArr[i];
+
+          var x1,x2,y1,y2 ;
+
+          x1 = parseInt(Math.round(200 + 195*Math.cos(Math.PI*startAngle/180)));
+          y1 = parseInt(Math.round(200 + 195*Math.sin(Math.PI*startAngle/180)));
+
+          x2 = parseInt(Math.round(200 + 195*Math.cos(Math.PI*endAngle/180)));
+          y2 = parseInt(Math.round(200 + 195*Math.sin(Math.PI*endAngle/180)));
+
+          var d = "M200,200  L" + x1 + "," + y1 + "  A195,195 0 " +
+                  ((endAngle-startAngle > 180) ? 1 : 0) + ",1 " + x2 + "," + y2 + " z";
+          //alert(d); // enable to see coords as they are displayed
+          var c = parseInt(i / sectorAngleArr.length * 360);
+          var arc = makeSVG("path", {d: d, fill: "hsl(" + c + ", 66%, 50%)"});
+          $svg.append(arc);
+
+          arc.onclick = (function (value) {
+            return function(){
+              console.log(value);
+            }
+          })(pieData[i]);
+
+          $chart.append($svg);
+      }
+    };
+
+
+    var $chart   = $(node);
+    var dataSet  = $(node).attr("data-set");
+    var val      = dataSet.split(',').map(function(dataSet){return Number(dataSet);}); // turns string to array of numbers
+    var $svg     = $('<svg viewBox="0 0 400 400"></svg>');
+
+        $chart.parent().addClass("pie");
+        drawArcs($svg, val);
+  },
   donut: function(node){
     var $chart   = $(node);
     var val      = $(node).attr("data-percent");
@@ -252,7 +308,8 @@ var thychart = {
       var $svg = ".svg";
 
       if(type){
-        $svg = $('<div class="svg"><svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><path class="path" d=""></path></svg></div>');
+        $svg = $('<div class="svg"><svg><path class="path" d=""></path></svg></div>');
+
         $svg.addClass(".p"+index);
         if(type==2){$svg.addClass("fill");}
         $chart.parent().append($svg);

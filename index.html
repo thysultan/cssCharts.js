@@ -42,6 +42,13 @@
         <!-- set data-grid to 0 for no grid -->
         <!-- data-width is the individual bars width -->
 
+        <h2> test pie chart v1</h2>
+        <hr>
+
+        <div class="chart">
+          <div class="pie-thychart" data-set="20,30"></div>
+        </div>
+
         <h2>donut chart v1</h2>
         <hr>
 
@@ -102,6 +109,8 @@
             $('.bar-chart').cssCharts({type:"bar"});
             $('.donut-chart').cssCharts({type:"donut"}).trigger('show-donut-chart');
             $('.line-chart').cssCharts({type:"line"});
+
+            $('.pie-thychart').cssCharts({type:"pie"});
         });
       </script>
     </body>
