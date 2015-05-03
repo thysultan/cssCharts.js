@@ -243,7 +243,12 @@
 /*.chart.pie svg path:nth-child(1n){fill:#bd380f;}
 .chart.pie svg path:nth-child(2n){fill:rgb(241,127,73);}*/
 
-.chart.pie svg path:hover{fill:#CCC;}
+.chart.pie svg path:hover{
+  fill:#CCC;
+/*  stroke:#FFF;
+  stroke-width:10px;*/
+  /* TODO: <use xlink:href="#shape2" /> for z-index */
+}
 
 .charts-tip{
   display:block;
