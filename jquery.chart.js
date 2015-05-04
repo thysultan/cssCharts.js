@@ -69,7 +69,7 @@ var thychart = {
 
           var rand = function(min, max) {
               return parseInt(Math.random() * (max-min+1), 10) + min;
-          }
+          };
 
           var get_random_color = function () {
               var color;
@@ -85,7 +85,7 @@ var thychart = {
             }
 
             return color;
-          }
+          };
 
           var c = parseInt(i / sectorAngleArr.length * 360);
           var randomFill = get_random_color();
@@ -145,7 +145,6 @@ var thychart = {
               var $targetId = $target.attr("id");
 
               if($lastId !== $targetId){
-                console.log($lastId,$targetId);
                 $chart.find("#"+$target.attr("id")).parent().remove();
                 $chart.find(".svg").append($parent);
               }

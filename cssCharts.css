@@ -403,6 +403,10 @@
   position:absolute;
 }
 
+.line-chart.no-points li span{
+  display:none;
+}
+
 .line-chart li span:before{
   content:"";
   position:absolute;
