@@ -115,12 +115,10 @@
 .donut-chart{
   width:100%;height:100%;
   position:relative;
-  cursor:pointer;
 
   -webkit-border-radius:50%;
   -moz-border-radius:50%;
   border-radius:50%;
-  /*overflow:hidden;*/
 }
 
 .donut-chart.fill{
@@ -195,7 +193,7 @@
 .spinner ~ .pie{
   pointer-events: none;
 }
-.donut-chart:hover .pie,
+
 .donut-chart.fill .pie,
 .pie-chart .pie{
   -webkit-box-shadow: 0 0 0 4px #bd380f;
@@ -232,7 +230,7 @@
 .chart.donut .pie-chart h2,
 .chart.donut .pie-chart h2 span{color:#FFF;}
 
-/* new pie chart in progress */
+/* pie chart */
 .chart.pie svg{width:100%;height:100%;}
 
 .chart.pie {
@@ -240,13 +238,8 @@
   height: 200px;
 }
 
-/*.chart.pie svg path:nth-child(1n){fill:#bd380f;}
-.chart.pie svg path:nth-child(2n){fill:rgb(241,127,73);}*/
-
 .chart.pie svg path:hover{
-  fill:#CCC;
-  stroke:#FFF;
-  stroke-width:10px;
+  stroke-width:14px;
 }
 
 .charts-tip{
@@ -265,7 +258,7 @@
   -moz-border-radius:4px;
   border-radius:4px;
 }
-/* new pie chart progress */
+/* pie chart */
 
 /* line chart */
 

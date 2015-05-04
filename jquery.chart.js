@@ -68,15 +68,24 @@ var thychart = {
           }
 
           var get_random_color = function () {
-              var h = rand(180, 250); // color hue between 180 and 250
-              var s = rand(30, 100); // saturation 30-100%
-              var l = rand(30, 70); // lightness 30-70%
-              return 'hsl(' + h + ',' + s + '%,' + l + '%)';
+              var color;
+
+              if(colorSet) {
+                color = (colorSet[i]);
+              }
+              else{
+                var h = rand(10, 60); // color hue between 0° and 360°
+                var s = rand(20, 100); // saturation 0-100%
+                var l = rand(30, 60); // lightness 0-100%
+                color = 'hsl(' + h + ',' + s + '%,' + l + '%)';
+            }
+
+            return color;
           }
 
           var c = parseInt(i / sectorAngleArr.length * 360);
-          // var randomFill = get_random_color();
-          var randomFill = "hsl(" + c + ", 60%, 50%)";
+          var randomFill = get_random_color();
+          // var randomFill = "hsl(" + c + ", 60%, 50%)";
 
           var arc = makeSVG("path", {d: d, fill: randomFill}, pieData[i], titles[i], i);
           $svg.prepend(arc);
@@ -88,10 +97,12 @@ var thychart = {
 
     var $chart   = $(node);
     var dataSet  = $(node).attr("data-set");
+    var colorSet  = $(node).attr("data-colors");
+        if(colorSet){ colorSet = colorSet.split(","); }
 
     var val = JSON.parse(dataSet);
 
-    var $svg     = $('<svg viewBox="0 0 400 400" class="svg"></svg>');
+    var $svg = $('<svg viewBox="0 0 400 400" class="svg"></svg>');
 
         $chart.parent().addClass("pie");
         drawArcs($svg, val);
@@ -110,12 +121,15 @@ var thychart = {
           var title = $target.attr("data-title");
           var _id = $target.attr("id");
           var $use = $('<use class="pathUse" xlink:href="#' + _id + '" />');
+          var color = $target.attr("fill");
 
           if(val){
             $tooltip.css({
               left: mPos.x,
               top: mPos.y
             });
+
+            if(color){ $(e.target).attr("stroke", color); }
 
             var setTooltip = function(){
               $("body").find("."+$tooltip.attr("class")).remove();
