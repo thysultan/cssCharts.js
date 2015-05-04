@@ -42,8 +42,8 @@ add "pie-chart" class to .donut-chart if you want to convert it to a pie chart, 
 $('.line-chart').cssCharts({type:"line"});
 ```
 
-* insure sure x cordinates are 0 - ascending.  
-* insure sure y cordinates are 0 or greater.  
+* insure x cordinates are 0 - ascending.  
+* insure y cordinates are 0 or greater.  
 
 - - -
 
