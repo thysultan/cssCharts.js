@@ -25,11 +25,15 @@ var thychart = {
   pie: function(node){
     var makeSVG = function(tag, attrs, val, title, i) {
       var el = $(document.createElementNS('http://www.w3.org/2000/svg', tag));
+      var g = $(document.createElementNS('http://www.w3.org/2000/svg', "g"));
+      // var text = $(document.createElementNS('http://www.w3.org/2000/svg', "text")).html(title); todo: add labels
 
       for (var k in attrs){
           el.attr(k,attrs[k]).attr("data-val", val).attr("data-title",title).attr("id","path"+i).attr("class","path");
+          g.append(el).attr("id","pathCont"+i).attr("class","pathCont");
+          // g.prepend(text);
       }
-      return el[0];
+      return g[0];
     };
 
     var drawArcs = function($svg, pieData){
@@ -85,8 +89,6 @@ var thychart = {
 
           var c = parseInt(i / sectorAngleArr.length * 360);
           var randomFill = get_random_color();
-          // var randomFill = "hsl(" + c + ", 60%, 50%)";
-
           var arc = makeSVG("path", {d: d, fill: randomFill}, pieData[i], titles[i], i);
           $svg.prepend(arc);
 
@@ -116,11 +118,12 @@ var thychart = {
           mPos.x = e.pageX;
           mPos.y = e.pageY;
           var $target = $(e.target).clone();
-          var $last = $chart.find(".path:last-child");
+          var $parent = $(e.target).parent().clone();
+
+          var $last = $chart.find(".pathCont:last-child .path:last-child");
           var val = $target.attr("data-val");
           var title = $target.attr("data-title");
           var _id = $target.attr("id");
-          var $use = $('<use class="pathUse" xlink:href="#' + _id + '" />');
           var color = $target.attr("fill");
 
           if(val){
@@ -129,21 +132,22 @@ var thychart = {
               top: mPos.y
             });
 
-            if(color){ $(e.target).attr("stroke", color); }
-
             var setTooltip = function(){
               $("body").find("."+$tooltip.attr("class")).remove();
               $tooltip.html(title+": " + val);
               $("body").append($tooltip);
             }();
 
+            if(color){ $(e.target).attr("stroke", color); }
+
             var setOrder = function(){
               var $lastId = $last.attr("id");
               var $targetId = $target.attr("id");
 
               if($lastId !== $targetId){
-                $chart.find("#"+$target.attr("id")).remove();
-                $chart.find(".svg").append($target);
+                console.log($lastId,$targetId);
+                $chart.find("#"+$target.attr("id")).parent().remove();
+                $chart.find(".svg").append($parent);
               }
             }();
           }

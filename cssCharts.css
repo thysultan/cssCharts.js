@@ -238,8 +238,14 @@
   height: 200px;
 }
 
+.chart.pie svg text{
+  text-anchor: middle;
+  fill:white;
+  stroke-width:0;
+  transform:translate(120,-80);
+}
 .chart.pie svg path:hover{
-  stroke-width:14px;
+  stroke-width:10px;
 }
 
 .charts-tip{
