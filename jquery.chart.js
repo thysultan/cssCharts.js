@@ -421,11 +421,11 @@ var thychart = {
           counter++;
 
           if(counter < Object.keys(points).length){
-              setTimeout(addPoint(points[counter].x, points[counter].y, false),0); // Add a new point after 200 milliseconds
+              addPoint(points[counter].x, points[counter].y, false);
           }
 
           if(counter == Object.keys(points).length && type ==2){
-            setTimeout(addPoint(null, null, "last"),0);
+            addPoint(null, null, "last");
           }
       };
       addPoint(points[0].x, points[0].y, true);
