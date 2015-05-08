@@ -264,6 +264,36 @@
   -moz-border-radius:4px;
   border-radius:4px;
 }
+
+.chart.pie .pie-legend{
+  position:absolute;
+  top:50%;
+  right:0;
+  margin-right:-30px;
+  transform:translateX(100%) translateY(-50%);
+}
+
+.chart.pie .pie-legend li{
+  display:block;
+  margin-bottom:14px;
+  clear:both;
+}
+
+.chart.pie .pie-legend li i{
+  top:1px;
+  position:relative;
+  display:block;
+  float:left;
+  width:14px;
+  height:14px;
+  background:#DDD;
+  margin-right:10px;
+
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,0.2);
+}
+
+.chart.pie .pie-legend li p{clear:both;display:inline;}
+
 /* pie chart */
 
 /* line chart */

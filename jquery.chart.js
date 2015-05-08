@@ -23,17 +23,21 @@
 
 var thychart = {
   pie: function(node){
-    var makeSVG = function(tag, attrs, val, title, i) {
-      var el = $(document.createElementNS('http://www.w3.org/2000/svg', tag));
-      var g = $(document.createElementNS('http://www.w3.org/2000/svg', "g"));
-      // var text = $(document.createElementNS('http://www.w3.org/2000/svg', "text")).html(title); todo: add labels
+    var makeSVG = function(tag, attrs, val, title, i, fill) {
+      var $el = $(document.createElementNS('http://www.w3.org/2000/svg', tag));
+      var $g = $(document.createElementNS('http://www.w3.org/2000/svg', "g"));
+
+      var $rep = $('<li><i></i><p></p></li>');
+          $rep.find("p").html(title+": " + val);
+          $rep.find("i").css({background: fill});
+
+          $chart.find("."+$leg.attr("class")).append($rep);
 
       for (var k in attrs){
-          el.attr(k,attrs[k]).attr("data-val", val).attr("data-title",title).attr("id","path"+i).attr("class","path");
-          g.append(el).attr("id","pathCont"+i).attr("class","pathCont");
-          // g.prepend(text);
+          $el.attr(k,attrs[k]).attr("data-val", val).attr("data-title",title).attr("id","path"+i).attr("class","path");
+          $g.append($el).attr("id","pathCont"+i).attr("class","pathCont");
       }
-      return g[0];
+      return $g[0];
     };
 
     var drawArcs = function($svg, pieData){
@@ -71,28 +75,27 @@ var thychart = {
               return parseInt(Math.random() * (max-min+1), 10) + min;
           };
 
-          var get_random_color = function () {
-              var color;
+          var getColor = function () {
+            var color;
 
-              if(colorSet) {
-                color = (colorSet[i]);
-              }
-              else{
-                var h = rand(10, 60); // color hue between 0° and 360°
-                var s = rand(20, 100); // saturation 0-100%
-                var l = rand(30, 60); // lightness 0-100%
-                color = 'hsl(' + h + ',' + s + '%,' + l + '%)';
+            if(colorSet) {
+              color = (colorSet[i]);
+            }
+            else{
+              var h = rand(10, 60); // color hue between 0° and 360°
+              var s = rand(20, 100); // saturation 0-100%
+              var l = rand(30, 60); // lightness 0-100%
+              color = 'hsl(' + h + ',' + s + '%,' + l + '%)';
             }
 
             return color;
           };
 
           var c = parseInt(i / sectorAngleArr.length * 360);
-          var randomFill = get_random_color();
-          var arc = makeSVG("path", {d: d, fill: randomFill}, pieData[i], titles[i], i);
+          var fill = getColor();
+          var arc = makeSVG("path", {d: d, fill: fill}, pieData[i], titles[i], i, fill);
           $svg.prepend(arc);
-
-          $chart.append($svg);
+          $chart.prepend($svg);
       }
     };
 
@@ -105,6 +108,8 @@ var thychart = {
     var val = JSON.parse(dataSet);
 
     var $svg = $('<svg viewBox="0 0 400 400" class="svg"></svg>');
+    var $leg = $('<ul class="pie-legend"></ul>');
+        $chart.append($leg);
 
         $chart.parent().addClass("pie");
         drawArcs($svg, val);
