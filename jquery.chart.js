@@ -12,6 +12,7 @@
       var defs = {};
           opts =  $.extend(defs, opts);
       return this.each(function() {
+          var _this = this;
           if(opts.type == "bar"){thychart.bar(this);}
           else if(opts.type == "line"){thychart.line(this);}
           else if(opts.type == "donut"){thychart.donut(this);}
@@ -348,8 +349,14 @@ var thychart = {
     };
 
     var setPosition = function(data, cord){
-      $("ul").find(data).css("left",cord.x + "px");
-      $("ul").find(data).css("bottom",cord.y + "px");
+      x = (( cord.x / dim.maxX ) * 100) + "%";
+      y = (( cord.y / height ) * 100) + "%";
+
+      cord.x = cord.x + "px";
+      cord.y = cord.y + "px";
+
+      $("ul").find(data).css("left",x);
+      $("ul").find(data).css("bottom",y);
     };
 
     var setContainerDimensions = function($chart,val){
@@ -361,14 +368,16 @@ var thychart = {
         $.each(val[index][0], function(index, value) {width.push(value);});
       });
 
-      height = Math.max.apply(Math, height) + 20;
-      width = Math.max.apply(Math, width) + 20;
+      maxY = Math.max.apply(Math, height) + 20;
+      maxX = Math.max.apply(Math, width) + 20;
 
-      $chart.css({width: width, height: height});
+      height = maxY;
+      width = $chart.parent().width();
+
       $chart.parent().css({width: width, height: height});
       $chart.parent().addClass("line");
 
-      return {width:width,height:height};
+      return {width:width,height:height, maxX: maxX,maxY: maxY};
     };
 
     var convertToArrayOfObjects = function(val, height) {
@@ -383,9 +392,15 @@ var thychart = {
             obj = {};
 
             for (k = 0; k < keys.length; k++) {
+              var x = keys[k];
+              var y = dim.height-dataClone[i][k];
+
+                  x = (x/dim.maxX) * dim.width;
+                  y = (y/dim.maxY) * dim.height;
+
               obj[k] = {
-                x: keys[k],
-                y: height-dataClone[i][k]
+                x: x,
+                y: y
               };
             }
             output.push(obj);
@@ -394,10 +409,10 @@ var thychart = {
     };
 
     var drawSVG = function(type, val, height, index){
-      var $svg = ".svg";
+      var $svg = ".svgCont";
 
       if(type){
-        $svg = $('<div class="svg"><svg><path class="path" d=""></path></svg></div>');
+        $svg = $('<div class="svgCont"><svg class="svg" viewBox="0 0 ' + width + ' ' + height + '"><path class="path" d=""></path></svg></div>');
 
         $svg.addClass(".p"+index);
         if(type==2){$svg.addClass("fill");}
@@ -432,6 +447,9 @@ var thychart = {
     };
 
     var $chart = $(node);
+        $chart.parent().find(".svgCont, .grid").remove();
+        $chart.parent().find(".line-chart").empty();
+
     var fill = $chart.attr("data-fill");
     var grid = $("<div class='grid'></div>");
         $chart.parent().append(grid);
@@ -446,7 +464,9 @@ var thychart = {
       cord = JSON.parse("[" + oneDim + "]");
     }
 
-    var height = setContainerDimensions($chart, cord).height;
+    var dim = setContainerDimensions($chart, cord);
+    var height = dim.height;
+    var width = dim.width;
 
     var loopCord = function(index, val, height){
       for (var i = 0; i < val[index].length; i++) {
