@@ -422,13 +422,16 @@ var thychart = {
       var points = convertToArrayOfObjects(val, height);
       var counter = 0;
 
-      var addPoint = function(x, y, isFirst){
+      var addPoint = function(points, counter, isFirst){
           var new_point;
-          var last = Object.keys(points).length-1;
 
           if(isFirst == "last"){
+            var last = Object.keys(points).length-1;
             new_point = " L" + points[last].x + "," + points[last].x + " L" + 0 + "," + points[last].x +" Z";
           }else{
+            var x = Math.floor(points[counter].x);
+            var y = Math.floor(points[counter].y);
+
             new_point = (isFirst? "M" : " ")+x+","+y;
           }
 
@@ -436,14 +439,14 @@ var thychart = {
           counter++;
 
           if(counter < Object.keys(points).length){
-              addPoint(points[counter].x, points[counter].y, false);
+              addPoint(points, counter, false);
           }
 
-          if(counter == Object.keys(points).length && type ==2){
-            addPoint(null, null, "last");
+          if(counter == Object.keys(points).length && type == 2){
+            addPoint(points, null, "last");
           }
       };
-      addPoint(points[0].x, points[0].y, true);
+      addPoint(points, counter, true);
     };
 
     var $chart = $(node);
