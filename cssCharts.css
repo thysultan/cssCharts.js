@@ -465,6 +465,10 @@
 .line-chart li span:after{
   background:rgb(241,127,73);
   border:2px solid #bd380f;
+
+  -webkit-box-shadow:0 0 0 4px #FFF;
+  -moz-box-shadow:0 0 0 4px #FFF;
+  box-shadow:0 0 0 4px #FFF;
 }
 /* line chart points */
 
@@ -486,6 +490,9 @@
   fill: rgba(241,127,73,0.0);
   stroke: rgb(241,127,73);
   stroke-width: 2px;
+}
+
+.chart.line.dotted svg path{
   /*if you want it dashed instead of filled*/
   stroke-dasharray: 3;
 }

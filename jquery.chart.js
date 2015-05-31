@@ -443,7 +443,7 @@ var thychart = {
           }
 
           if(counter == Object.keys(points).length && type == 2){
-            addPoint(points, null, "last");
+            addPoint(points, counter, "last");
           }
       };
       addPoint(points, counter, true);
