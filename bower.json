@@ -1,0 +1,23 @@
+{
+  "name": "csscharts.js",
+  "description": "jquery plugin to create simple donut, bar or line charts with dom nodes. style with css.",
+  "main": "jquery.chart.js",
+  "authors": [
+    "Sultan Tarimo"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "charts",
+    "jquery",
+    "css"
+  ],
+  "homepage": "https://github.com/sultantarimo/cssCharts.js",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
