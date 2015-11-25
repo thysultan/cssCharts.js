@@ -3,6 +3,14 @@ jquery plugin to create simple donut, bar or line charts with dom nodes. style w
 
 [http://thysultan.com/projects/cssCharts/](http://thysultan.com/projects/cssCharts/)
 
+___
+
+
+###Install with bower
+```
+bower install csscharts
+```
+
 ### Include:
 
 ```html
