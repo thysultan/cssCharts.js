@@ -12,7 +12,6 @@
       var defs = {};
           opts =  $.extend(defs, opts);
       return this.each(function() {
-          var _this = this;
           if(opts.type == "bar"){thychart.bar(this);}
           else if(opts.type == "line"){thychart.line(this);}
           else if(opts.type == "donut"){thychart.donut(this);}
@@ -92,7 +91,6 @@ var thychart = {
             return color;
           };
 
-          var c = parseInt(i / sectorAngleArr.length * 360);
           var fill = getColor();
           var arc = makeSVG("path", {d: d, fill: fill}, pieData[i], titles[i], i, fill);
           $svg.prepend(arc);
@@ -117,10 +115,11 @@ var thychart = {
 
     var mPos = {x: -1,y: -1};
 
-    var getMousePos = function(){
+    (function getMousePos(){
       var $tooltip = $('<div class="charts-tip"></div>');
+      var $body = $("body");
 
-      $chart.mousemove(function(e) {
+      $chart.mousemove(function() {
           mPos.x = e.pageX;
           mPos.y = e.pageY;
           var $target = $(e.target).clone();
@@ -129,7 +128,6 @@ var thychart = {
           var $last = $chart.find(".pathCont:last-child .path:last-child");
           var val = $target.attr("data-val");
           var title = $target.attr("data-title");
-          var _id = $target.attr("id");
           var color = $target.attr("fill");
 
           if(val){
@@ -138,15 +136,15 @@ var thychart = {
               top: mPos.y
             });
 
-            var setTooltip = function(){
-              $("body").find("."+$tooltip.attr("class")).remove();
+            (function setTooltip(){
+              $body.find("."+$tooltip.attr("class")).remove();
               $tooltip.html(title+": " + val);
-              $("body").append($tooltip);
-            }();
+              $body.append($tooltip);
+            })();
 
             if(color){ $(e.target).attr("stroke", color); }
 
-            var setOrder = function(){
+            (function setOrder(){
               var $lastId = $last.attr("id");
               var $targetId = $target.attr("id");
 
@@ -154,23 +152,23 @@ var thychart = {
                 $chart.find("#"+$target.attr("id")).parent().remove();
                 $chart.find(".svg").append($parent);
               }
-            }();
+            })();
           }
       });
 
       $chart.mouseleave(function(e) {
         //  remove tooltip
-        $("body").find("."+$tooltip.attr("class")).remove();
+        $body.find("."+$tooltip.attr("class")).remove();
       });
 
-    }();
+    })();
 
 
   },
   donut: function(node){
     var $chart   = $(node);
-    var val      = $(node).attr("data-percent");
-    var title    = $(node).attr("data-title");
+    var val      = $chart.attr("data-percent");
+    var title    = $chart.attr("data-title");
 
         $chart.parent().addClass("donut");
 
@@ -189,7 +187,7 @@ var thychart = {
 
         $chart.on('show-donut-chart', function(){
           $title.find("p").text(0);
-          $({countNum: $title.find("p").text()}).animate({countNum: val/360*100}, {
+          $({countNum: $title.find("p").text()}).animate({countNum: parseFloat(val/360*100).toFixed(2)}, {
             duration: 500,
             easing:'linear',
             step: function() {
@@ -286,7 +284,6 @@ var thychart = {
     if(maxData() > max || !max){ max = maxData(); }
 
     data = JSON.parse("[[" + data + "]]");
-    var barsNo = data[0].length;
 
     $.each(data, function(i, v) {
       // first dimension
@@ -296,7 +293,7 @@ var thychart = {
       for (i = 0; i < data[0].length; i++){
         var ul = uls.clone();
 
-        $.each(v[i], function(index, val) {
+        $.each(v[i], function(index) {
           // second dimension
           var li = lis.clone();
 
@@ -349,8 +346,8 @@ var thychart = {
     };
 
     var setPosition = function(data, cord){
-      x = (( cord.x / dim.maxX ) * 100) + "%";
-      y = (( cord.y / height ) * 100) + "%";
+      var x = (( cord.x / dim.maxX ) * 100) + "%";
+      var y = (( cord.y / height ) * 100) + "%";
 
       cord.x = cord.x + "px";
       cord.y = cord.y + "px";
@@ -363,13 +360,13 @@ var thychart = {
       var height = [];
       var width = [];
 
-      $.each(val, function(index, value) {
+      $.each(val, function(index) {
         $.each(val[index][1], function(index, value) {height.push(value);});
         $.each(val[index][0], function(index, value) {width.push(value);});
       });
 
-      maxY = Math.max.apply(Math, height) + 20;
-      maxX = Math.max.apply(Math, width) + 20;
+      var maxY = Math.max.apply(Math, height) + 20;
+      var maxX = Math.max.apply(Math, width) + 20;
 
       height = maxY;
       width = $chart.parent().width();
@@ -380,7 +377,7 @@ var thychart = {
       return {width:width,height:height, maxX: maxX,maxY: maxY};
     };
 
-    var convertToArrayOfObjects = function(val, height) {
+    var convertToArrayOfObjects = function(val) {
         var dataClone = val.slice(0),
             keys = dataClone.shift(),
             i = 0,
@@ -456,8 +453,6 @@ var thychart = {
     var fill = $chart.attr("data-fill");
     var grid = $("<div class='grid'></div>");
         $chart.parent().append(grid);
-    var $pointsCont = $('<g class="points"></g>');
-    var container;
 
     var oneDim = "[" + $chart.attr("data-cord") + "]";
     var cord = $chart.attr("data-cord");
