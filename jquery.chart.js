@@ -119,7 +119,7 @@ var thychart = {
       var $tooltip = $('<div class="charts-tip"></div>');
       var $body = $("body");
 
-      $chart.mousemove(function() {
+      $chart.mousemove(function(e) {
           mPos.x = e.pageX;
           mPos.y = e.pageY;
           var $target = $(e.target).clone();
